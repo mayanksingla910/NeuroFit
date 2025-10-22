@@ -1,10 +1,15 @@
-import { useState } from "react";
-
 import loseWeight from "@/assets/weight.png";
 import buildMuscle from "@/assets/muscle.png";
 import flexibility from "@/assets/flexibility.png";
 import fitness from "@/assets/fitness.png";
 import { Label } from "../ui/label";
+
+import type { FormData } from "@/types/onboardingForm";
+
+type StepProps = {
+  form: FormData;
+  setForm: React.Dispatch<React.SetStateAction<FormData>>;
+};
 
 type ActivityLevel = {
   id: number;
@@ -48,10 +53,7 @@ const fitnessGoals: FitnessGoal[] = [
   { id: 4, goal: "General Fitness", icon: fitness },
 ];
 
-export default function Step2() {
-  const [selectedActivityLevel, setSelectedActivityLevel] = useState<number>(2);
-  const [selectedGoal, setSelectedGoal] = useState<number>(4);
-
+export default function Step2({ form, setForm }: StepProps) {
   return (
     <>
       <div>
@@ -67,8 +69,13 @@ export default function Step2() {
             {activityLevels.map((item: ActivityLevel, index: number) => (
               <div
                 key={index}
-                onClick={() => setSelectedActivityLevel(item.id)}
-                className={`flex flex-col p-3 border-2 rounded-md transition-colors gap-2 w-[45%] lg:w-[22%] cursor-pointer ${selectedActivityLevel === item.id ? "bg-green-600 border-green-600 " : " hover:bg-green-600/90 "}`}
+                onClick={() =>
+                  setForm((prev) => ({
+                    ...prev,
+                    activityLevel: Number(item.id),
+                  }))
+                }
+                className={`flex flex-col p-3 border-2 rounded-md transition-colors gap-2 w-[45%] lg:w-[22%] cursor-pointer ${form.activityLevel === item.id ? "bg-green-600 border-green-600 " : " hover:bg-green-600/90 "}`}
               >
                 <h2 className="font-semibold text-lg">{item.level}</h2>
                 <p className="font-medium text-neutral-300 text-sm">
@@ -84,8 +91,10 @@ export default function Step2() {
             {fitnessGoals.map((item: FitnessGoal, index: number) => (
               <div
                 key={index}
-                onClick={() => setSelectedGoal(item.id)}
-                className={`flex items-center p-3 border-2 rounded-md transition-colors gap-3 w-[45%] lg:w-[22%] cursor-pointer ${selectedGoal === item.id ? "bg-green-600 border-green-600 " : " hover:bg-green-600/90 "}`}
+                onClick={() =>
+                  setForm((prev) => ({ ...prev, goal: Number(item.id) }))
+                }
+                className={`flex items-center p-3 border-2 rounded-md transition-colors gap-3 w-[45%] lg:w-[22%] cursor-pointer ${form.goal === item.id ? "bg-green-600 border-green-600 " : " hover:bg-green-600/90 "}`}
               >
                 <img
                   src={item.icon}

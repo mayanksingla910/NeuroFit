@@ -1,6 +1,11 @@
-import { useState } from "react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
+import type { FormData } from "@/types/onboardingForm";
+
+type StepProps = {
+  form: FormData;
+  setForm: React.Dispatch<React.SetStateAction<FormData>>;
+};
 
 const dietaryPreferences: string[] = [
   "No Restriction",
@@ -11,11 +16,7 @@ const dietaryPreferences: string[] = [
   "Paleo",
 ];
 
-export default function Step3() {
-
-  const [selectedDiet, setSelectedDiet] = useState<string>("No Restriction");
-  const [allergies, setAllergies] = useState<string>("");
-
+export default function Step3({ form, setForm }: StepProps) {
   return (
     <>
       <div>
@@ -30,8 +31,14 @@ export default function Step3() {
         <div className="flex flex-col gap-5">
           <Label>Dietary Preference</Label>
           <div className="flex flex-wrap justify-between gap-5">
-            {dietaryPreferences.map((item:string, index:number) => (
-              <div key={index} onClick={() => setSelectedDiet(item)} className={`flex items-center gap-2 p-3 border-2 rounded-md transition-colors lg:w-[30%] w-full sm:w-[45%] cursor-pointer  ${selectedDiet === item ? "bg-green-600 border-green-600 " : " hover:bg-green-600/90 "}`}>
+            {dietaryPreferences.map((item: string, index: number) => (
+              <div
+                key={index}
+                onClick={() =>
+                  setForm((prev) => ({ ...prev, diet: String(item) }))
+                }
+                className={`flex items-center gap-2 p-3 border-2 rounded-md transition-colors lg:w-[30%] w-full sm:w-[45%] cursor-pointer  ${form.diet === item ? "bg-green-600 border-green-600 " : " hover:bg-green-600/90 "}`}
+              >
                 <h2>{item}</h2>
               </div>
             ))}
@@ -40,7 +47,16 @@ export default function Step3() {
         <div className="flex flex-col gap-5">
           <Label>Allergies or Food Restrictions</Label>
           <div>
-            <Input placeholder="e.g., nuts, diary, gluten (optional)" value={allergies} onChange={(e) => setAllergies(String(e.target.value))} />
+            <Input
+              placeholder="e.g., nuts, diary, gluten (optional)"
+              value={form.allergies}
+              onChange={(e) =>
+                setForm((prev) => ({
+                  ...prev,
+                  allergies: String(e.target.value),
+                }))
+              }
+            />
           </div>
         </div>
       </div>

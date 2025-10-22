@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { ChevronRight, ChevronLeft } from "lucide-react";
+import type { FormData } from "@/types/onboardingForm";
 import Step1 from "@/components/onBoardingForm/step1";
 import Step2 from "@/components/onBoardingForm/step2";
 import Step3 from "@/components/onBoardingForm/step3";
@@ -14,6 +15,21 @@ export const Route = createFileRoute("/_onboarding/questions")({
 });
 
 function RouteComponent() {
+
+  const [form, setForm] = useState<FormData>({
+    age: 18,
+    gender: "Male",
+    height: 180,
+    heightParam: "cm",
+    weight: 70,
+    weightParam: "kg",
+    activityLevel: 2,
+    goal: 4,
+    diet: "No Restriction",
+    allergies: "",
+    description: ""
+  });
+
   const [step, setStep] = useState(1);
   const [direction, setDirection] = useState(1);
   const totalSteps = 4;
@@ -26,10 +42,10 @@ function RouteComponent() {
   const prevStep = () => step > 1 && setStep(step - 1);
 
   const stepComponents: Record<number, ReactNode> = {
-    1: <Step1 />,
-    2: <Step2 />,
-    3: <Step3 />,
-    4: <Step4 />,
+    1: <Step1 form={form} setForm={setForm} />,
+    2: <Step2 form={form} setForm={setForm} />,
+    3: <Step3 form={form} setForm={setForm} />,
+    4: <Step4 form={form} setForm={setForm} />,
   };
 
   const variants = {

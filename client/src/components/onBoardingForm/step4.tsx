@@ -1,9 +1,12 @@
-import { useState } from "react";
 import { Textarea } from "../ui/textarea";
+import type { FormData } from "@/types/onboardingForm";
 
-export default function Step4() {
-  const [description, setDescription] = useState<string>("");
+type StepProps = {
+  form: FormData;
+  setForm: React.Dispatch<React.SetStateAction<FormData>>;
+};
 
+export default function Step4({ form, setForm }: StepProps) {
   return (
     <>
       <div>
@@ -16,8 +19,13 @@ export default function Step4() {
       <div className="flex flex-col justify-between gap-x-8 gap-y-12 w-full mt-8 lg:mt-14">
         <Textarea
           placeholder="e.g. marathon, PCOS, vegan athlete, home workouts, avoid boring recipes"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          value={form.description}
+          onChange={(e) =>
+            setForm((prev) => ({
+              ...prev,
+              description: String(e.target.value),
+            }))
+          }
           className="min-h-24 max-h-60"
         />
       </div>
