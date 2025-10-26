@@ -13,6 +13,10 @@ import { Route as TermsRouteImport } from './routes/terms'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as OnboardingQuestionsRouteImport } from './routes/_onboarding/questions'
 import { Route as OnboardingIntroRouteImport } from './routes/_onboarding/intro'
+import { Route as AuthenticatedTrackerRouteImport } from './routes/_authenticated/tracker'
+import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
+import { Route as AuthenticatedMealRouteImport } from './routes/_authenticated/meal'
+import { Route as AuthenticatedExerciseRouteImport } from './routes/_authenticated/exercise'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthSignupRouteImport } from './routes/_auth/signup'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
@@ -37,6 +41,26 @@ const OnboardingIntroRoute = OnboardingIntroRouteImport.update({
   path: '/intro',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedTrackerRoute = AuthenticatedTrackerRouteImport.update({
+  id: '/_authenticated/tracker',
+  path: '/tracker',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
+  id: '/_authenticated/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedMealRoute = AuthenticatedMealRouteImport.update({
+  id: '/_authenticated/meal',
+  path: '/meal',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedExerciseRoute = AuthenticatedExerciseRouteImport.update({
+  id: '/_authenticated/exercise',
+  path: '/exercise',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/_authenticated/dashboard',
   path: '/dashboard',
@@ -59,6 +83,10 @@ export interface FileRoutesByFullPath {
   '/login': typeof AuthLoginRoute
   '/signup': typeof AuthSignupRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/exercise': typeof AuthenticatedExerciseRoute
+  '/meal': typeof AuthenticatedMealRoute
+  '/profile': typeof AuthenticatedProfileRoute
+  '/tracker': typeof AuthenticatedTrackerRoute
   '/intro': typeof OnboardingIntroRoute
   '/questions': typeof OnboardingQuestionsRoute
 }
@@ -68,6 +96,10 @@ export interface FileRoutesByTo {
   '/login': typeof AuthLoginRoute
   '/signup': typeof AuthSignupRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/exercise': typeof AuthenticatedExerciseRoute
+  '/meal': typeof AuthenticatedMealRoute
+  '/profile': typeof AuthenticatedProfileRoute
+  '/tracker': typeof AuthenticatedTrackerRoute
   '/intro': typeof OnboardingIntroRoute
   '/questions': typeof OnboardingQuestionsRoute
 }
@@ -78,6 +110,10 @@ export interface FileRoutesById {
   '/_auth/login': typeof AuthLoginRoute
   '/_auth/signup': typeof AuthSignupRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/exercise': typeof AuthenticatedExerciseRoute
+  '/_authenticated/meal': typeof AuthenticatedMealRoute
+  '/_authenticated/profile': typeof AuthenticatedProfileRoute
+  '/_authenticated/tracker': typeof AuthenticatedTrackerRoute
   '/_onboarding/intro': typeof OnboardingIntroRoute
   '/_onboarding/questions': typeof OnboardingQuestionsRoute
 }
@@ -89,6 +125,10 @@ export interface FileRouteTypes {
     | '/login'
     | '/signup'
     | '/dashboard'
+    | '/exercise'
+    | '/meal'
+    | '/profile'
+    | '/tracker'
     | '/intro'
     | '/questions'
   fileRoutesByTo: FileRoutesByTo
@@ -98,6 +138,10 @@ export interface FileRouteTypes {
     | '/login'
     | '/signup'
     | '/dashboard'
+    | '/exercise'
+    | '/meal'
+    | '/profile'
+    | '/tracker'
     | '/intro'
     | '/questions'
   id:
@@ -107,6 +151,10 @@ export interface FileRouteTypes {
     | '/_auth/login'
     | '/_auth/signup'
     | '/_authenticated/dashboard'
+    | '/_authenticated/exercise'
+    | '/_authenticated/meal'
+    | '/_authenticated/profile'
+    | '/_authenticated/tracker'
     | '/_onboarding/intro'
     | '/_onboarding/questions'
   fileRoutesById: FileRoutesById
@@ -117,6 +165,10 @@ export interface RootRouteChildren {
   AuthLoginRoute: typeof AuthLoginRoute
   AuthSignupRoute: typeof AuthSignupRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedExerciseRoute: typeof AuthenticatedExerciseRoute
+  AuthenticatedMealRoute: typeof AuthenticatedMealRoute
+  AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
+  AuthenticatedTrackerRoute: typeof AuthenticatedTrackerRoute
   OnboardingIntroRoute: typeof OnboardingIntroRoute
   OnboardingQuestionsRoute: typeof OnboardingQuestionsRoute
 }
@@ -151,6 +203,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OnboardingIntroRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/tracker': {
+      id: '/_authenticated/tracker'
+      path: '/tracker'
+      fullPath: '/tracker'
+      preLoaderRoute: typeof AuthenticatedTrackerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/profile': {
+      id: '/_authenticated/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AuthenticatedProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/meal': {
+      id: '/_authenticated/meal'
+      path: '/meal'
+      fullPath: '/meal'
+      preLoaderRoute: typeof AuthenticatedMealRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/exercise': {
+      id: '/_authenticated/exercise'
+      path: '/exercise'
+      fullPath: '/exercise'
+      preLoaderRoute: typeof AuthenticatedExerciseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -181,6 +261,10 @@ const rootRouteChildren: RootRouteChildren = {
   AuthLoginRoute: AuthLoginRoute,
   AuthSignupRoute: AuthSignupRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedExerciseRoute: AuthenticatedExerciseRoute,
+  AuthenticatedMealRoute: AuthenticatedMealRoute,
+  AuthenticatedProfileRoute: AuthenticatedProfileRoute,
+  AuthenticatedTrackerRoute: AuthenticatedTrackerRoute,
   OnboardingIntroRoute: OnboardingIntroRoute,
   OnboardingQuestionsRoute: OnboardingQuestionsRoute,
 }
