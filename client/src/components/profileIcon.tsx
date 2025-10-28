@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useRouterState } from "@tanstack/react-router";
 import { UserCircle } from "lucide-react";
 import {
   Popover,
@@ -7,6 +7,10 @@ import {
 } from "@/components/ui/popover";
 
 export default function ProfileIcon() {
+  const router = useRouterState();
+
+  const isActive = router.location.pathname.includes("/profile");
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -22,17 +26,21 @@ export default function ProfileIcon() {
         side="bottom"
         align="end"
         sideOffset={8}
-        className="backdrop-blur-sm w-max px-1 py-2 flex flex-col rounded-md border border-neutral-700/80 bg-neutral-800/93"
+        className="backdrop-blur-sm w-max px-1.5 py-2 flex flex-col rounded-md border border-neutral-700/80 bg-neutral-800/93"
       >
         <Link
           to="/profile"
-          className="text-neutral-200 cursor-pointer px-4 py-1 rounded-sm hover:bg-green-600/80"
+          className={`text-neutral-200 cursor-pointer px-4 py-1 rounded-sm ${
+            isActive
+              ? "bg-green-600 hover:bg-green-600/80 text-white shadow-md"
+              : "text-neutral-200 hover:text-white hover:bg-neutral-700/60"
+          }`}
         >
           Profile
         </Link>
         <Link
           to="/login"
-          className="text-neutral-200 cursor-pointer px-4 py-1 rounded-sm hover:bg-green-600/80"
+          className="text-neutral-200 hover:text-white hover:bg-neutral-700/60 cursor-pointer px-4 py-1 rounded-sm"
         >
           Log Out
         </Link>

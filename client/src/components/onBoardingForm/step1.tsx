@@ -9,14 +9,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ChevronDown, ChevronUp } from "lucide-react";
-import type { FormData } from "@/types/onboardingForm";
+import type { FormData, StepProps } from "@/types/onboardingForm";
 
-type StepProps = {
-  form: FormData;
-  setForm: React.Dispatch<React.SetStateAction<FormData>>;
-};
-
-export default function Step1({ form, setForm }: StepProps) {
+export default function Step1({
+  isEditable = true,
+  isProfile = false,
+  form,
+  setForm,
+}: StepProps) {
   const handleIncrement = () =>
     setForm((prev) => ({ ...prev, age: Math.min(prev.age + 1, 100) }));
 
@@ -25,17 +25,24 @@ export default function Step1({ form, setForm }: StepProps) {
 
   return (
     <>
-      <div>
-        <h1 className="text-3xl font-bold text-green-500">Basic Information</h1>
-        <p className="mt-3 text-neutral-300">
-          Let's start with some basics about you
-        </p>
-      </div>
-      <div className="flex justify-between gap-x-8 gap-y-16 flex-wrap w-full mt-8 md:mt-14 ">
+      {!isProfile && (
+        <div>
+          <h1 className="text-3xl font-bold text-green-500">
+            Basic Information
+          </h1>
+          <p className="mt-3 text-neutral-300">
+            Let's start with some basics about you
+          </p>
+        </div>
+      )}
+      <div
+        className={`flex justify-between gap-x-8 gap-y-16 flex-wrap w-full mt-8 ${isProfile ? "md:mt-6" : "md:mt-14"}`}
+      >
         <div className="flex flex-col gap-3 w-[45%]">
           <Label htmlFor="age">Age</Label>
           <div className="relative">
             <Input
+              disabled={!isEditable}
               id="age"
               type="number"
               value={form.age || ""}
@@ -44,7 +51,7 @@ export default function Step1({ form, setForm }: StepProps) {
               }
               min={0}
               max={100}
-              className="w-full px-3 appearance-none text-center "
+              className="w-full px-3 appearance-none text-center disabled:cursor-default disabled:opacity-80"
             />
             <div className="absolute right-2 top-0.5 flex flex-col">
               <button
@@ -68,6 +75,7 @@ export default function Step1({ form, setForm }: StepProps) {
         <div className="flex flex-col gap-3 w-[45%]">
           <Label>Gender</Label>
           <Select
+            disabled={!isEditable}
             value={form.gender}
             onValueChange={(value) =>
               setForm((prev) => ({
@@ -76,7 +84,7 @@ export default function Step1({ form, setForm }: StepProps) {
               }))
             }
           >
-            <SelectTrigger className="w-full">
+            <SelectTrigger className="w-full disabled:cursor-default disabled:opacity-80">
               <SelectValue placeholder="Gender" />
             </SelectTrigger>
             <SelectContent>
@@ -96,14 +104,16 @@ export default function Step1({ form, setForm }: StepProps) {
           <Label>Height</Label>
           <div className="w-full flex">
             <Input
+              disabled={!isEditable}
               type="number"
               value={form.height || ""}
               onChange={(e) =>
                 setForm((prev) => ({ ...prev, height: Number(e.target.value) }))
               }
-              className="w-[75%] rounded-r-none text-center"
+              className="w-[75%] rounded-r-none text-center disabled:cursor-default disabled:opacity-80"
             />
             <Select
+              disabled={!isEditable}
               value={form.heightParam}
               onValueChange={(value) =>
                 setForm((prev) => ({
@@ -112,7 +122,7 @@ export default function Step1({ form, setForm }: StepProps) {
                 }))
               }
             >
-              <SelectTrigger className="w-[25%] rounded-l-none">
+              <SelectTrigger className="w-[25%] rounded-l-none disabled:cursor-default disabled:opacity-80">
                 <SelectValue placeholder="cm" />
               </SelectTrigger>
               <SelectContent>
@@ -128,14 +138,16 @@ export default function Step1({ form, setForm }: StepProps) {
           <Label>Weight</Label>
           <div className="w-full flex">
             <Input
+              disabled={!isEditable}
               type="number"
               value={form.weight || ""}
               onChange={(e) =>
                 setForm((prev) => ({ ...prev, weight: Number(e.target.value) }))
               }
-              className="w-[75%] rounded-r-none text-center"
+              className="w-[75%] rounded-r-none text-center disabled:cursor-default disabled:opacity-80"
             />
             <Select
+              disabled={!isEditable}
               value={form.weightParam}
               onValueChange={(value) =>
                 setForm((prev) => ({
@@ -144,7 +156,7 @@ export default function Step1({ form, setForm }: StepProps) {
                 }))
               }
             >
-              <SelectTrigger className="w-[25%] rounded-l-none">
+              <SelectTrigger className="w-[25%] rounded-l-none disabled:cursor-default disabled:opacity-80">
                 <SelectValue placeholder="kg" />
               </SelectTrigger>
               <SelectContent>

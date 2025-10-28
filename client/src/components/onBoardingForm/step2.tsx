@@ -4,12 +4,7 @@ import flexibility from "@/assets/flexibility.png";
 import fitness from "@/assets/fitness.png";
 import { Label } from "../ui/label";
 
-import type { FormData } from "@/types/onboardingForm";
-
-type StepProps = {
-  form: FormData;
-  setForm: React.Dispatch<React.SetStateAction<FormData>>;
-};
+import type { StepProps } from "@/types/onboardingForm";
 
 type ActivityLevel = {
   id: number;
@@ -53,15 +48,19 @@ const fitnessGoals: FitnessGoal[] = [
   { id: 4, goal: "General Fitness", icon: fitness },
 ];
 
-export default function Step2({ form, setForm }: StepProps) {
+export default function Step2({ isProfile = false, form, setForm }: StepProps) {
   return (
     <>
-      <div>
-        <h1 className="text-3xl font-bold text-green-500">Activity & Goals</h1>
-        <p className="mt-3 text-neutral-300">
-          Help us understand your lifestyle and objectives
-        </p>
-      </div>
+      {!isProfile && (
+        <div>
+          <h1 className="text-3xl font-bold text-green-500">
+            Activity & Goals
+          </h1>
+          <p className="mt-3 text-neutral-300">
+            Help us understand your lifestyle and objectives
+          </p>
+        </div>
+      )}
       <div className="flex flex-col justify-between gap-x-8 gap-y-14 w-full mt-8 lg:mt-14">
         <div className="flex flex-col gap-5">
           <Label>Activity Level</Label>

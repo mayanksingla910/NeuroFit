@@ -1,11 +1,6 @@
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
-import type { FormData } from "@/types/onboardingForm";
-
-type StepProps = {
-  form: FormData;
-  setForm: React.Dispatch<React.SetStateAction<FormData>>;
-};
+import type { StepProps } from "@/types/onboardingForm";
 
 const dietaryPreferences: string[] = [
   "No Restriction",
@@ -16,17 +11,19 @@ const dietaryPreferences: string[] = [
   "Paleo",
 ];
 
-export default function Step3({ form, setForm }: StepProps) {
+export default function Step3({ isProfile = false, form, setForm }: StepProps) {
   return (
     <>
-      <div>
-        <h1 className="text-3xl font-bold text-green-500">
-          Dietary Preferences
-        </h1>
-        <p className="mt-3 text-neutral-300">
-          Let's personalize your meal plans
-        </p>
-      </div>
+      {!isProfile && (
+        <div>
+          <h1 className="text-3xl font-bold text-green-500">
+            Dietary Preferences
+          </h1>
+          <p className="mt-3 text-neutral-300">
+            Let's personalize your meal plans
+          </p>
+        </div>
+      )}
       <div className="flex flex-col justify-between gap-x-8 gap-y-12 w-full mt-8 lg:mt-14">
         <div className="flex flex-col gap-5">
           <Label>Dietary Preference</Label>
