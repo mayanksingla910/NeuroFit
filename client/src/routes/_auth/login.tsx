@@ -1,8 +1,8 @@
-import { LoginForm } from '@/components/loginform'
-import { createFileRoute } from '@tanstack/react-router'
-export const Route = createFileRoute('/_auth/login')({
+import { LoginForm } from "@/components/loginform";
+import { createFileRoute } from "@tanstack/react-router";
+export const Route = createFileRoute("/_auth/login")({
   component: RouteComponent,
-})
+});
 
 function RouteComponent() {
   return (
@@ -11,5 +11,5 @@ function RouteComponent() {
         <LoginForm />
       </div>
     </div>
-  )
+  );
 }

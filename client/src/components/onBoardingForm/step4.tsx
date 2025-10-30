@@ -3,7 +3,12 @@ import { Textarea } from "../ui/textarea";
 
 import type { StepProps } from "@/types/onboardingForm";
 
-export default function Step4({isEditable = true, isProfile = false, form, setForm }: StepProps) {
+export default function Step4({
+  isEditable = true,
+  isProfile = false,
+  form,
+  setForm,
+}: StepProps) {
   return (
     <>
       {!isProfile && (
@@ -18,7 +23,7 @@ export default function Step4({isEditable = true, isProfile = false, form, setFo
       <div className="flex flex-col justify-between gap-x-8 gap-y-6 w-full mt-8 lg:mt-14">
         {isProfile && <Label>Anything Else?</Label>}
         <Textarea
-        disabled={!isEditable}
+          disabled={!isEditable}
           placeholder="e.g. marathon, PCOS, vegan athlete, home workouts, avoid boring recipes"
           value={form.description}
           onChange={(e) =>

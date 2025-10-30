@@ -65,7 +65,7 @@ const yearlyData: Record<number, Array<{ month: string; weight: number }>> = {
   2025: [
     { month: "January", weight: 80 },
     { month: "February", weight: 81 },
-  ]
+  ],
 };
 
 const months = [
@@ -83,41 +83,42 @@ const months = [
   "December",
 ];
 
-// Determine available years for logic
-const availableYears = Object.keys(yearlyData).map(Number).sort((a, b) => a - b);
+const availableYears = Object.keys(yearlyData)
+  .map(Number)
+  .sort((a, b) => a - b);
 
-// --- Constants for colors
-const COLOR_GREEN = "#22c55e"; // Tailwind green-500
-const COLOR_AMBER = "#fb923c"; // Tailwind amber-500
-
+const COLOR_GREEN = "#22c55e"; 
+const COLOR_AMBER = "#fb923c"; 
 
 export default function WeightChart() {
   const [mode, setMode] = useState<"year" | "month">("year");
-  const initialYear = availableYears.length > 0 ? availableYears[availableYears.length - 1] : new Date().getFullYear();
-  const [period, setPeriod] = useState({ year: initialYear, monthIndex: 0 }); 
+  const initialYear =
+    availableYears.length > 0
+      ? availableYears[availableYears.length - 1]
+      : new Date().getFullYear();
+  const [period, setPeriod] = useState({ year: initialYear, monthIndex: 0 });
   const width = useWindowWidth();
 
   const { year, monthIndex } = period;
 
-  // --- Determine if the SELECTED period has data
   const hasSelectedYearData = !!yearlyData[year];
-  const hasSelectedMonthData = hasSelectedYearData && yearlyData[year][monthIndex] !== undefined;
-  
-  // --- Find the single closest data point for fallback when NOTHING is available (e.g., year 2000)
+  const hasSelectedMonthData =
+    hasSelectedYearData && yearlyData[year][monthIndex] !== undefined;
+
   const chartYear = useMemo(() => {
     if (hasSelectedYearData) return year;
-    
+
     let closestYear = availableYears[0] || year;
     let minDiff = Infinity;
 
     for (const dataYear of availableYears) {
       const diff = Math.abs(dataYear - year);
-      
+
       if (diff < minDiff) {
         minDiff = diff;
         closestYear = dataYear;
       } else if (diff === minDiff && dataYear > closestYear) {
-         closestYear = dataYear;
+        closestYear = dataYear;
       }
     }
     return closestYear;
@@ -126,28 +127,24 @@ export default function WeightChart() {
   const chartMonthIndex = useMemo(() => {
     const dataForYear = yearlyData[chartYear];
     if (!dataForYear || dataForYear.length === 0) return 0;
-    
+
     if (dataForYear[monthIndex]) {
       return monthIndex;
     }
-    
-    return dataForYear.length - 1; 
 
+    return dataForYear.length - 1;
   }, [chartYear, monthIndex]);
 
-  // --- Determine the single fallback weight value
   const fallbackWeight = useMemo(() => {
     return yearlyData[chartYear]?.[chartMonthIndex]?.weight ?? 70;
   }, [chartYear, chartMonthIndex]);
 
+  const isFullFallback =
+    !hasSelectedYearData || (mode === "month" && !hasSelectedMonthData);
 
-  // Helper state to track if we are using a full single-value fallback line (reserved for AMBER color)
-  const isFullFallback = !hasSelectedYearData || (mode === 'month' && !hasSelectedMonthData);
-  
-  // Helper state to track if the selected year has partial data (reserved for GREEN color, but padded)
-  const isPartialYear = mode === 'year' && hasSelectedYearData && yearlyData[year].length < 12;
+  const isPartialYear =
+    mode === "year" && hasSelectedYearData && yearlyData[year].length < 12;
 
-  // --- Create the chart data
   const monthlyData = useMemo(() => {
     if (hasSelectedMonthData) {
       const baseWeight = yearlyData[year][monthIndex].weight;
@@ -160,34 +157,29 @@ export default function WeightChart() {
         ).toFixed(1),
       }));
     }
-    
-    // If no data for the selected month, show a flat line using the fallback weight
+
     return Array.from({ length: 30 }, (_, i) => ({
       day: i + 1,
       weight: fallbackWeight,
     }));
   }, [year, monthIndex, hasSelectedMonthData, fallbackWeight]);
 
-  // This memo generates data using only the 'weight' key, handling both full and partial padding.
   const chartData = useMemo(() => {
     if (mode === "year") {
-      // 1. If the year has NO data at all (e.g., 2000), show a full flat line using the fallback weight
       if (!hasSelectedYearData) {
-        return months.map(month => ({
+        return months.map((month) => ({
           month,
           weight: fallbackWeight,
         }));
       }
-      
-      // 2. If the year HAS partial data (e.g., 2024 up to June), implement "hold last value"
+
       const currentYearData = yearlyData[year];
       const dataLength = currentYearData.length;
-      
+
       if (dataLength < 12) {
         const lastRecordedWeight = currentYearData[dataLength - 1].weight;
         const completeYearData = [...currentYearData];
-        
-        // Pad the remaining months with the last recorded weight
+
         for (let i = dataLength; i < 12; i++) {
           completeYearData.push({
             month: months[i],
@@ -196,17 +188,12 @@ export default function WeightChart() {
         }
         return completeYearData;
       }
-      
-      // 3. If the year has full data (12 months), return it directly
       return currentYearData;
     }
-    
-    // Month Mode: use the monthlyData memo
+
     return monthlyData;
   }, [mode, year, hasSelectedYearData, fallbackWeight, monthlyData]);
 
-
-  // --- Navigation Handlers (unchanged)
   const handlePrev = () => {
     setPeriod(({ year, monthIndex }) => {
       if (mode === "year") return { year: year - 1, monthIndex };
@@ -223,27 +210,23 @@ export default function WeightChart() {
     });
   };
 
-  // --- UX Labels
   const displayLabel =
     mode === "year" ? `${year}` : `${months[monthIndex]} ${year}`;
-  
-  
+
   let dataHint = "Yearly overview";
-  if (mode === 'month') {
-      dataHint = isFullFallback 
-          ? `No data for ${months[monthIndex]}. Showing ${fallbackWeight}kg from ${months[chartMonthIndex]} ${chartYear}.`
-          : `Daily progress in ${months[monthIndex]}`;
+  if (mode === "month") {
+    dataHint = isFullFallback
+      ? `No data for ${months[monthIndex]}. Showing ${fallbackWeight}kg from ${months[chartMonthIndex]} ${chartYear}.`
+      : `Daily progress in ${months[monthIndex]}`;
   } else if (isPartialYear) {
-      const lastMonth = months[yearlyData[year].length - 1];
-      dataHint = `Showing trend up to ${lastMonth}. Missing data is held at the last value (${yearlyData[year][yearlyData[year].length - 1].weight}kg).`;
+    const lastMonth = months[yearlyData[year].length - 1];
+    dataHint = `Showing trend up to ${lastMonth}. Missing data is held at the last value (${yearlyData[year][yearlyData[year].length - 1].weight}kg).`;
   } else if (isFullFallback) {
-      dataHint = `No data available for ${year}. Showing closest year's data held at ${fallbackWeight}kg.`;
+    dataHint = `No data available for ${year}. Showing closest year's data held at ${fallbackWeight}kg.`;
   }
-  
+
   const lineStrokeColor = isFullFallback ? COLOR_AMBER : COLOR_GREEN;
 
-
-  // --- Adjust tick density based on width and mode
   const xAxisInterval = useMemo(() => {
     if (mode === "year") {
       if (width < 400) return 2;
@@ -335,8 +318,11 @@ export default function WeightChart() {
                 }
               />
               <YAxis
-                // Use adjusted domain only if it's a full fallback (single point)
-                domain={isFullFallback ? [fallbackWeight - 1, fallbackWeight + 1] : ["dataMin - 1", "dataMax + 1"]}
+                domain={
+                  isFullFallback
+                    ? [fallbackWeight - 1, fallbackWeight + 1]
+                    : ["dataMin - 1", "dataMax + 1"]
+                }
                 tickLine={false}
                 axisLine={false}
                 tick={{ fill: "#a3a3a3", fontSize: 12 }}
@@ -345,16 +331,17 @@ export default function WeightChart() {
                 cursor={false}
                 content={<ChartTooltipContent hideLabel />}
               />
-              
-              {/* --- Single Line Component for all scenarios (color controlled by isFullFallback) */}
+
               <Line
                 dataKey="weight"
                 type="monotone"
-                // GREEN for actual data or partially padded data, AMBER only for full fallback (no data)
-                stroke={lineStrokeColor} 
+                stroke={lineStrokeColor}
                 strokeWidth={isFullFallback ? 2 : 3}
-                // Show dots only when in month mode and not using a full fallback
-                dot={!isFullFallback && mode === "month" ? { r: 3, fill: lineStrokeColor, strokeWidth: 0 } : false} 
+                dot={
+                  !isFullFallback && mode === "month"
+                    ? { r: 3, fill: lineStrokeColor, strokeWidth: 0 }
+                    : false
+                }
                 activeDot={{
                   r: 5,
                   fill: lineStrokeColor,
@@ -362,7 +349,6 @@ export default function WeightChart() {
                   strokeWidth: 2,
                 }}
               />
-
             </LineChart>
           </ResponsiveContainer>
         </ChartContainer>

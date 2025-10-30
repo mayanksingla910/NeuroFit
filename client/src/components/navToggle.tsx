@@ -15,21 +15,45 @@ export default function NavToggle({
     const animateSequence = async () => {
       if (isExpanded) {
         await Promise.all([
-          top.start({ y: 0, transition: { duration: 0.15, ease: "easeInOut" } }),
-          bottom.start({ y: 0, transition: { duration: 0.15, ease: "easeInOut" } }),
+          top.start({
+            y: 0,
+            transition: { duration: 0.15, ease: "easeInOut" },
+          }),
+          bottom.start({
+            y: 0,
+            transition: { duration: 0.15, ease: "easeInOut" },
+          }),
         ]);
         await Promise.all([
-          top.start({ rotate: 45, transition: { duration: 0.15, ease: "easeInOut" } }),
-          bottom.start({ rotate: -45, transition: { duration: 0.15, ease: "easeInOut" } }),
+          top.start({
+            rotate: 45,
+            transition: { duration: 0.15, ease: "easeInOut" },
+          }),
+          bottom.start({
+            rotate: -45,
+            transition: { duration: 0.15, ease: "easeInOut" },
+          }),
         ]);
       } else {
         await Promise.all([
-          top.start({ rotate: 0, transition: { duration: 0.15, ease: "easeInOut" } }),
-          bottom.start({ rotate: 0, transition: { duration: 0.15, ease: "easeInOut" } }),
+          top.start({
+            rotate: 0,
+            transition: { duration: 0.15, ease: "easeInOut" },
+          }),
+          bottom.start({
+            rotate: 0,
+            transition: { duration: 0.15, ease: "easeInOut" },
+          }),
         ]);
         await Promise.all([
-          top.start({ y: -6, transition: { duration: 0.15, ease: "easeInOut" } }),
-          bottom.start({ y: 6, transition: { duration: 0.15, ease: "easeInOut" } }),
+          top.start({
+            y: -6,
+            transition: { duration: 0.15, ease: "easeInOut" },
+          }),
+          bottom.start({
+            y: 6,
+            transition: { duration: 0.15, ease: "easeInOut" },
+          }),
         ]);
       }
     };
