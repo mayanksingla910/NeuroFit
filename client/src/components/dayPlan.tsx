@@ -76,7 +76,7 @@ export default function DayPlan() {
     <div className="flex lg:flex-row flex-col gap-4 w-full ">
       <div className="p-3 w-full lg:w-1/2 rounded-lg border border-neutral-700/60 group">
         <div className="flex justify-between items-center mb-2">
-          <h2 className="text-xl text-green-500 font-bold">Exercises</h2>
+          <h2 className="text-xl text-green-500 font-bold ml-1">Exercises</h2>
           <Button
             onClick={() => navigate({ to: "/exercise" })}
             variant="link"
@@ -86,7 +86,7 @@ export default function DayPlan() {
           </Button>
         </div>
         <div className="border-neutral-800/70 border rounded-lg">
-          <div className="mx-3 my-2 flex justify-evenly p-2 text-gray-200 bg-neutral-700/70 backdrop-blur-sm rounded-3xl">
+          <div className="mx-3 my-2 flex justify-evenly p-2 text-gray-200 bg-neutral-700/70 backdrop-blur-sm rounded-lg">
             <h3 className="flex items-center gap-1">
               <Timer className="size-4 text-green-500" />
               {WORKOUT.duration}
@@ -100,8 +100,8 @@ export default function DayPlan() {
                 <h3 className="font-medium">{section}</h3>
                 <div className="flex flex-col gap-2 text-neutral-200 font-medium">
                   {items.map((item, index) => (
-                    <h3 key={index} className="flex text-xs items-center text-neutral-400">
-                      <ChevronRight className="size-3 stroke-neutral-400" />
+                    <h3 key={index} className="flex text-xs items-center text-neutral-300">
+                      <ChevronRight className="size-3 stroke-neutral-300" />
                       {item}
                     </h3>
                   ))}
@@ -117,7 +117,7 @@ export default function DayPlan() {
       </div>
       <div className="p-3 w-full lg:w-1/2 rounded-lg border border-neutral-700/60 group">
         <div className="flex justify-between items-center mb-2">
-          <h2 className="text-xl text-green-500 font-bold">Meals</h2>
+          <h2 className="text-xl text-green-500 font-bold ml-1">Meals</h2>
           <Button
             onClick={() => navigate({ to: "/meal" })}
             variant="link"
@@ -127,7 +127,7 @@ export default function DayPlan() {
           </Button>
         </div>
         <div className="border-neutral-800/70 border rounded-lg">
-          <div className="mx-3 my-2 flex justify-evenly p-2 text-neutral-200 bg-neutral-700/70 backdrop-blur-sm rounded-3xl">
+          <div className="mx-3 my-2 flex justify-evenly p-2 text-neutral-200 bg-neutral-700/70 backdrop-blur-sm rounded-lg">
             <h3 className="flex items-center gap-1">
               <Flame className="size-4 text-green-500" />
               Daily Target

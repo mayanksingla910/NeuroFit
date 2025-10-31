@@ -43,17 +43,52 @@ function ProfilePage() {
           Profile
         </h1>
 
-        <div className="flex flex-col lg:flex-row gap-6 lg:gap-10 lg:h-[calc(100vh-16rem)]">
-          <aside className="sticky top-0 bg-black w-full lg:w-1/3 h-[33%] lg:h-full rounded-lg p-4">
-            Sidebar Content
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-10 lg:h-[calc(100vh-16rem)] overflow-auto">
+          <aside
+            className="
+            sticky top-0 w-full lg:w-1/3
+            flex flex-col  items-center justify-start
+            gap-6 p-6 rounded-2xl
+            bg-gradient-to-b 
+            transition-all duration-300
+            "
+          >
+            <div className="flex flex-col md:flex-row lg:flex-col  items-center justify-start md:justify-center lg:justify-start lg:mt-10 md:gap-16 lg:gap-6
+            gap-6">
+              <div className="relative">
+                <div className="size-28 rounded-full bg-gradient-to-tr from-green-500/60 to-emerald-400/40 p-[2px] shadow-lg">
+                  <div className="size-full rounded-full bg-neutral-900 flex items-center justify-center">
+                    <span className="text-3xl font-semibold text-green-400">
+                      M
+                    </span>
+                  </div>
+                </div>
+                <span className="absolute bottom-1 right-1 size-3 bg-green-500 rounded-full border-2 border-neutral-900" />
+              </div>
+
+              <div className="text-center flex flex-col items-center gap-2">
+                <h2 className="text-xl font-bold text-gray-100 tracking-wide">
+                  Mayank Singla
+                </h2>
+                <p className="text-sm text-neutral-400 font-medium">Mayank</p>
+                <p className="text-xs text-neutral-500 mt-1">
+                  singlamayank10@gmail.com
+                </p>
+              </div>
+            </div>
+            <div className="mt-4 md:mt-8 lg:mt-4 pt-4 border-t border-neutral-700/60 w-full text-center">
+              <p className="text-xs text-neutral-500 uppercase tracking-widest">
+                Status: PRO Member
+              </p>
+            </div>
           </aside>
 
-          <section className="w-full lg:w-2/3 overflow-auto pr-2">
+          <section className="w-full lg:w-2/3 pr-2">
             <p
               onClick={() => {
                 setIsEditable(!isEditable);
               }}
-              className={` py-2 px-4 w-fit rounded-md hover:bg-neutral-700/40 cursor-default transition-all duration-300 lg:mr-5 ml-auto ${isEditable ? "text-gray-200" : "text-green-600 hover:text-green-600/80"}`}
+              className={` py-2 px-4 w-fit rounded-md hover:bg-neutral-700/40 cursor-default transition-all duration-200 lg:mr-5 ml-auto ${isEditable ? "text-gray-200" : "text-green-600 hover:text-green-600/80"}`}
             >
               {isEditable ? "Save & Close" : "Edit"}
             </p>
@@ -63,13 +98,13 @@ function ProfilePage() {
               form={form}
               setForm={setForm}
             />
-            <div className="w-full h-0.5 rounded-3xl mt-12 bg-neutral-500/80" />
+            <div className="border rounded-3xl mt-12 border-neutral-600/80" />
             <ProfileStep
               isEditable={isEditable}
               form={form}
               setForm={setForm}
             />
-            <div className="w-full h-0.5 rounded-3xl mt-12 bg-neutral-500/80" />
+            <div className="border rounded-3xl mt-12 border-neutral-600/80" />
             <Step4
               isEditable={isEditable}
               isProfile={true}
