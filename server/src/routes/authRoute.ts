@@ -1,5 +1,10 @@
-import { PrismaClient } from "@prisma/client";
-import bcrypt from "bcrypt";
+import { Router } from "express";
+import { login, signup } from "../controllers/authController.js";
 
-const prisma = new PrismaClient();
 
+const router = Router();
+
+router.post("/login", login);
+router.post("/signup", signup);
+
+export default router;

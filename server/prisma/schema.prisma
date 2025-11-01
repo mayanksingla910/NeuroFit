@@ -10,8 +10,54 @@ datasource db {
 model User {
   id            Int        @id @default(autoincrement())
   email         String     @unique
-  name          String?
+  username      String     @unique
+  name          String
   password      String
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
+  onboarded     Boolean    @default(false)
+
+  Profile       Profile[]
+  WeightLog     WeightLog[]
+  DailySummary  DailySummary[]
+}
+
+model Profile {
+  id            Int        @id @default(autoincrement())
+  userId        Int
+  age           Int
+  gender        String
+  height        Float
+  heightParam   String
+  weight        Float
+  weightParam   String
+  activityLevel Int
+  goal          Int
+  diet          String
+  allergies     String?
+  description   String?
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  user          User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model WeightLog {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  weight    Float
+  date      DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model DailySummary {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  date         DateTime @default(now()) @unique
+  caloriesIn   Int      @default(0)
+  caloriesOut  Int      @default(0)
+  streakCount  Int      @default(0) 
+
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

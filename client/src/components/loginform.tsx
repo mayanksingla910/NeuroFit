@@ -6,6 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { z } from "zod";
+import axios from "axios";
+import { backendURL } from "@/lib/backendURL";
 import { loginSchema } from "@/types/auth";
 import { useNavigate } from "@tanstack/react-router";
 
@@ -27,11 +29,14 @@ export function LoginForm({
     setErrors((prev) => ({ ...prev, [e.target.id]: "" }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit =async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       loginSchema.parse(form);
+      const user = await axios.post(`${backendURL}/api/auth/login`, form);
+      if(user.data.success) {
       navigate({ to: "/dashboard" });
+      }
     } catch (err) {
       if (err instanceof z.ZodError) {
         const fieldErrors: Record<string, string> = {};

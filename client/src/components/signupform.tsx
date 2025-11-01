@@ -1,6 +1,7 @@
 import type React from "react";
 import { Eye, EyeOff, GalleryVerticalEnd } from "lucide-react";
 import { z } from "zod";
+import axios from "axios";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -9,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { signupSchema } from "@/types/auth";
+import { backendURL } from "@/lib/backendURL";
 
 export function SignupForm({
   className,
@@ -29,11 +31,14 @@ export function SignupForm({
     setErrors((prev) => ({ ...prev, [e.target.id]: "" }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       signupSchema.parse(form);
+      const user = await axios.post(`${backendURL}/api/auth/signup`, form);
+      if(user.data.success) {
       navigate({ to: "/intro" });
+      }
     } catch (err) {
       if (err instanceof z.ZodError) {
         const fieldErrors: Record<string, string> = {};
