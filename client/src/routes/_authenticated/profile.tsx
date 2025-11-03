@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 
 import Navbar from "@/components/navbar";
@@ -6,6 +6,9 @@ import Step1 from "@/components/onBoardingForm/step1";
 import Step4 from "@/components/onBoardingForm/step4";
 import type { FormData } from "@/types/onboardingForm";
 import ProfileStep from "@/components/profileStep";
+import axios from "axios";
+import { backendURL } from "@/lib/backendURL";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/_authenticated/profile")({
   component: ProfilePage,
@@ -27,8 +30,30 @@ function ProfilePage() {
     description: "",
   });
 
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const response = await axios.get(`${backendURL}/profile`);
+        setForm(response.data.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchProfile();
+  }, []);
+
+  const handleSave = async () => {
+    try {
+      const response = await axios.put(`${backendURL}/profile`, form);
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
-    <div className="h-screen flex flex-col custom-scrollbar">
+    <div className="min-h-screen  custom-scrollbar">
       <Navbar />
 
       <main
@@ -53,8 +78,10 @@ function ProfilePage() {
             transition-all duration-300
             "
           >
-            <div className="flex flex-col md:flex-row lg:flex-col  items-center justify-start md:justify-center lg:justify-start lg:mt-10 md:gap-16 lg:gap-6
-            gap-6">
+            <div
+              className="flex flex-col md:flex-row lg:flex-col  items-center justify-start md:justify-center lg:justify-start lg:mt-10 md:gap-16 lg:gap-6
+            gap-6"
+            >
               <div className="relative">
                 <div className="size-28 rounded-full bg-gradient-to-tr from-green-500/60 to-emerald-400/40 p-[2px] shadow-lg">
                   <div className="size-full rounded-full bg-neutral-900 flex items-center justify-center">
@@ -84,14 +111,20 @@ function ProfilePage() {
           </aside>
 
           <section className="w-full lg:w-2/3 pr-2">
-            <p
-              onClick={() => {
-                setIsEditable(!isEditable);
-              }}
-              className={` py-2 px-4 w-fit rounded-md hover:bg-neutral-700/40 cursor-default transition-all duration-200 lg:mr-5 ml-auto ${isEditable ? "text-gray-200" : "text-green-600 hover:text-green-600/80"}`}
-            >
-              {isEditable ? "Save & Close" : "Edit"}
-            </p>
+            <div className="lg:mr-5 ml-auto flex items-center gap-4 ">
+              <p
+                onClick={() => {
+                  setIsEditable(!isEditable);
+                }}
+                className={` py-2 px-4 w-fit rounded-md hover:bg-neutral-700/40 cursor-default transition-all ml-auto duration-200 ${isEditable ? "text-gray-200" : "text-green-600 hover:text-green-600/80"}`}
+              >
+                {isEditable ? "Cancel" : "Edit"}
+              </p>
+              {isEditable && (
+              <Button onClick={handleSave} className="bg-green-600 text-neutral-300 hover:bg-green-600/80">
+                Save
+              </Button>)}
+            </div>
             <Step1
               isEditable={isEditable}
               isProfile={true}

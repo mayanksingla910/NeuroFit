@@ -9,6 +9,8 @@ import Step2 from "@/components/onBoardingForm/step2";
 import Step3 from "@/components/onBoardingForm/step3";
 import Step4 from "@/components/onBoardingForm/step4";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import axios from "axios";
+import { backendURL } from "@/lib/backendURL";
 
 export const Route = createFileRoute("/_onboarding/questions")({
   component: RouteComponent,
@@ -59,6 +61,18 @@ function RouteComponent() {
       x: direction < 0 ? 80 : -80,
     }),
   };
+
+  const handleSubmit = async () => {
+    try{
+      const response = await axios.post(`${backendURL}/profile`, form);
+      console.log(response);
+      if (response.data?.success) {
+        navigate({to: "/dashboard"});
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   return (
     <div className="relative bg-background flex max-w-4xl min-h-svh mx-auto gap-6 p-6 md:p-10 flex-col">
@@ -114,9 +128,7 @@ function RouteComponent() {
           </Button>
         ) : (
           <Button
-            onClick={() => {
-              navigate({ to: "/dashboard" });
-            }}
+            onClick={handleSubmit}
             className="px-10 py-5 bg-green-600 hover:bg-green-600/80 text-neutral-200"
           >
             Finish

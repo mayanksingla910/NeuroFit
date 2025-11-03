@@ -59,9 +59,13 @@ export const signup = async (req: Request, res: Response) => {
     if (existingUser)
       return res.status(400).json({ message: "User already exists" });
 
-    const base = email.split("@")[0];
-    const randomSuffix = crypto.randomBytes(2).toString("hex");
-    const username = `${base}_${randomSuffix}`;
+    const base = email.split("@")[0] as string
+    ;
+    let username = base;
+    if(await prisma.user.findUnique({ where: { username: base } })) {
+      const randomSuffix = crypto.randomBytes(2).toString("hex");
+      username = `${username}_${randomSuffix}`;
+    }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
