@@ -4,7 +4,7 @@ import { authMiddleware } from "../middleware/authMiddleware.js";
 
 const router = Router();
 
-// router.use(authMiddleware);
+router.use(authMiddleware);
 
 router.get("/profile", getProfile);
 router.post("/profile", postProfile);

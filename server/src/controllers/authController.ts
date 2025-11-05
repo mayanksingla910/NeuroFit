@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import crypto from "crypto";
 import type { Request, Response } from "express";
 import { loginSchema, signupSchema } from "../types/auth.js";
+import jwt from "jsonwebtoken";
 
 const prisma = new PrismaClient();
 
@@ -28,11 +29,15 @@ export const login = async (req: Request, res: Response) => {
     const isValid = await bcrypt.compare(password, user.password);
     if (!isValid)
       return res.status(401).json({ message: "Invalid email or password" });
-
+    const token = jwt.sign(
+      { id: user.id, email: user.email },
+      process.env.JWT_SECRET as string,
+      { expiresIn: "7d" }
+    );
     return res.status(200).json({
       success: true,
       message: "Login successful",
-      data: { userId: user.id },
+      data: { token },
     });
   } catch (err) {
     console.error(err);
@@ -59,10 +64,9 @@ export const signup = async (req: Request, res: Response) => {
     if (existingUser)
       return res.status(400).json({ message: "User already exists" });
 
-    const base = email.split("@")[0] as string
-    ;
+    const base = email.split("@")[0] as string;
     let username = base;
-    if(await prisma.user.findUnique({ where: { username: base } })) {
+    if (await prisma.user.findUnique({ where: { username: base } })) {
       const randomSuffix = crypto.randomBytes(2).toString("hex");
       username = `${username}_${randomSuffix}`;
     }
@@ -78,10 +82,16 @@ export const signup = async (req: Request, res: Response) => {
       },
     });
 
+    const token = jwt.sign(
+      { id: user.id, email: user.email },
+      process.env.JWT_SECRET as string,
+      { expiresIn: "7d" }
+    );
+
     return res.status(200).json({
       success: true,
       message: "Signup successful",
-      data: { userId: user.id },
+      data: { token },
     });
   } catch (err) {
     console.error(err);

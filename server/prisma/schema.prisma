@@ -20,6 +20,7 @@ model User {
   Profile       Profile[]
   WeightLog     WeightLog[]
   DailySummary  DailySummary[]
+  MealPlan      MealPlan[]
 }
 
 model Profile {
@@ -60,4 +61,24 @@ model DailySummary {
   streakCount  Int      @default(0) 
 
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model MealPlan {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  day String
+  meals        Meal[]
+
+  user         User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Meal {
+  id           Int      @id @default(autoincrement())
+  name         String
+  summary      String
+  calories     Int
+  macros       String
+  mealPlanId   Int
+
+  mealPlan     MealPlan @relation(fields: [mealPlanId], references: [id], onDelete: Cascade)
 }

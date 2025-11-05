@@ -6,10 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { z } from "zod";
-import axios from "axios";
-import { backendURL } from "@/lib/backendURL";
 import { loginSchema } from "@/types/auth";
 import { useNavigate } from "@tanstack/react-router";
+import api from "@/lib/api";
 
 export function LoginForm({
   className,
@@ -33,8 +32,9 @@ export function LoginForm({
     e.preventDefault();
     try {
       loginSchema.parse(form);
-      const user = await axios.post(`${backendURL}/api/auth/login`, form);
+      const user = await api.post(`/auth/login`, form);
       if(user.data.success) {
+        localStorage.setItem("token", user.data.data.token);
       navigate({ to: "/dashboard" });
       }
     } catch (err) {

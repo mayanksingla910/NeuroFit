@@ -3,10 +3,13 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
+interface AuthRequest extends Request {
+  user?: { id: number };
+}
 
-export const getUser = async (req:Request, res:Response) => {
+export const getUser = async (req:AuthRequest, res:Response) => {
     try {
-        const userId = req.body.id as number;
+        const userId = req.user?.id as number;
         if (!userId) {
             return res.status(401).json({ message: 'Unauthorized' });
         }
@@ -30,9 +33,9 @@ export const getUser = async (req:Request, res:Response) => {
     }
 }
 
-export const updateUser = async (req:Request, res:Response) => {
+export const updateUser = async (req:AuthRequest, res:Response) => {
     try {
-        const userId = req.body?.id as number;
+        const userId = req.user?.id as number;
         if (!userId) {
             return res.status(401).json({ message: 'Unauthorized' });
         }

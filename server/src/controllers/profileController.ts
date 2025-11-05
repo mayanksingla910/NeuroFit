@@ -3,9 +3,13 @@ import type { Request, Response } from "express";
 
 const prisma = new PrismaClient();
 
-export const getProfile = async (req: Request, res: Response) => {
+interface AuthRequest extends Request {
+  user?: { id: number };
+}
+
+export const getProfile = async (req: AuthRequest, res: Response) => {
   try {
-    const userId = req.body.userId as number;
+    const userId = req.user?.id as number;
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
     }
@@ -29,7 +33,7 @@ export const getProfile = async (req: Request, res: Response) => {
   }
 };
 
-export const postProfile = async (req: Request, res: Response) => {
+export const postProfile = async (req: AuthRequest, res: Response) => {
   const {
     age,
     gender,
@@ -45,7 +49,7 @@ export const postProfile = async (req: Request, res: Response) => {
   } = req.body;
 
   try {
-    const userId = req.body.userId as number;
+    const userId = req.user?.id as number;
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
     }
@@ -87,7 +91,7 @@ export const postProfile = async (req: Request, res: Response) => {
   }
 };
 
-export const updateProfile = async (req: Request, res: Response) => {
+export const updateProfile = async (req: AuthRequest, res: Response) => {
   const {
     age,
     gender,
@@ -103,7 +107,7 @@ export const updateProfile = async (req: Request, res: Response) => {
   } = req.body;
 
   try {
-    const userId = req.body.userId as number;
+    const userId = req.user?.id as number;
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
     }
