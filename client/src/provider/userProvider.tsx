@@ -1,6 +1,6 @@
 import { UserContext } from "@/context/userContext";
+import api from "@/lib/api";
 import type { UserType } from "@/types/user";
-import axios from "axios";
 import { useEffect, useState } from "react";
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
@@ -14,7 +14,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get("/api/user");
+        const response = await api.get(`/user`);
         setUser(response.data.data); 
       } catch (error) {
         console.error("Error fetching user:", error);

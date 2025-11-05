@@ -1,14 +1,12 @@
 import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 
-import Navbar from "@/components/navbar";
 import Step1 from "@/components/onBoardingForm/step1";
 import Step4 from "@/components/onBoardingForm/step4";
 import type { FormData } from "@/types/onboardingForm";
 import ProfileStep from "@/components/profileStep";
-import axios from "axios";
-import { backendURL } from "@/lib/backendURL";
 import { Button } from "@/components/ui/button";
+import api from "@/lib/api";
 
 export const Route = createFileRoute("/_authenticated/profile")({
   component: ProfilePage,
@@ -33,7 +31,7 @@ function ProfilePage() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await axios.get(`${backendURL}/profile`);
+        const response = await api.get(`/profile`);
         setForm(response.data.data);
       } catch (error) {
         console.error(error);
@@ -45,20 +43,18 @@ function ProfilePage() {
 
   const handleSave = async () => {
     try {
-      const response = await axios.put(`${backendURL}/profile`, form);
-      console.log(response);
+      await api.put(`/profile`, form);
+      setIsEditable(false);
     } catch (error) {
       console.error(error);
     }
   };
 
   return (
-    <div className="min-h-screen  custom-scrollbar">
-      <Navbar />
-
+    <div>
       <main
         className="
-          flex-1 m-10 mx-auto w-[95%] md:w-[92%] 
+          flex-1 
           bg-neutral-800/70 border border-neutral-700/60 
           backdrop-blur-sm rounded-xl p-6 md:pr-2
           space-y-6 lg:overflow-hidden 
@@ -121,9 +117,13 @@ function ProfilePage() {
                 {isEditable ? "Cancel" : "Edit"}
               </p>
               {isEditable && (
-              <Button onClick={handleSave} className="bg-green-600 text-neutral-300 hover:bg-green-600/80">
-                Save
-              </Button>)}
+                <Button
+                  onClick={handleSave}
+                  className="bg-green-600 text-neutral-300 hover:bg-green-600/80"
+                >
+                  Save
+                </Button>
+              )}
             </div>
             <Step1
               isEditable={isEditable}

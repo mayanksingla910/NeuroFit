@@ -6,6 +6,13 @@ export const Route = createRootRoute({
 })
 
 function RootComponent() {
+
+  // const navigate = useNavigate();
+
+  // React.useEffect(() =>{
+  //   navigate({to: "/dashboard"})
+  // })
+
   return (
     <React.Fragment>
       <Outlet />

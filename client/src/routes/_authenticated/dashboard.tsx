@@ -1,6 +1,5 @@
 import Chatbox from "@/components/chatbox";
 import ChatInput from "@/components/chatInput";
-import Navbar from "@/components/navbar";
 import WeightChart from "@/components/weightChart";
 import WelcomeCard from "@/components/welcomeCard";
 import { createFileRoute } from "@tanstack/react-router";
@@ -90,30 +89,21 @@ function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-900 text-white font-inter">
-
-      <Navbar />
-
+    <div>
       <main
         className={`
-          w-full md:w-[95%] mx-auto px-6 py-12 space-y-10 transition-filter duration-300
+          space-y-10 transition-filter duration-300
           ${viewChat && !isMinimized ? "mb-28 opacity-30 pointer-events-none" : ""} 
           `}
       >
         <WelcomeCard />
-        <motion.div
-          className={`w-full bottom-0 z-50 `}
-          animate={{ y: viewChat && !isMinimized ? 0 : 0 }}
-          transition={{ duration: 0.3 }}
-        >
-          <ChatInput
-            viewChat={viewChat && !isMinimized}
-            setViewChat={handleSetViewChat}
-            isSending={isSending}
-            setIsSending={setIsSending}
-            handleSendMessage={handleSendMessage}
-          />
-        </motion.div>
+        <ChatInput
+          viewChat={viewChat && !isMinimized}
+          setViewChat={handleSetViewChat}
+          isSending={isSending}
+          setIsSending={setIsSending}
+          handleSendMessage={handleSendMessage}
+        />
         <DayPlan />
         <WeightChart />
       </main>

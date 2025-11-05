@@ -40,7 +40,7 @@ export default function Chatbox({ setViewChat, handleCloseChat, isSending, messa
       animate="visible"
       exit="exit"
     >
-      <div className="flex flex-col h-full max-w-4xl mx-auto p-4 md:p-8">
+      <div className="flex flex-col h-full max-w-4xl px-auto p-4 md:p-8">
         
         <header className="flex justify-between items-center pb-4 border-b border-neutral-700">
           <h2 className="text-2xl font-bold text-green-500">

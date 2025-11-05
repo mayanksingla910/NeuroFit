@@ -1,4 +1,4 @@
-import { Link, useRouterState } from "@tanstack/react-router";
+import { Link, useRouterState, useNavigate } from "@tanstack/react-router";
 import { UserCircle } from "lucide-react";
 import {
   Popover,
@@ -8,8 +8,14 @@ import {
 
 export default function ProfileIcon() {
   const router = useRouterState();
+  const navigate = useNavigate();
 
   const isActive = router.location.pathname.includes("/profile");
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate({to: "/login"});
+  };
 
   return (
     <Popover>
@@ -38,12 +44,12 @@ export default function ProfileIcon() {
         >
           Profile
         </Link>
-        <Link
-          to="/login"
+        <p
+          onClick={handleLogout}
           className="text-neutral-200 hover:text-white hover:bg-neutral-700/60 cursor-pointer px-4 py-1 rounded-sm"
         >
           Log Out
-        </Link>
+        </p>
       </PopoverContent>
     </Popover>
   );

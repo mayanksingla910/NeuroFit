@@ -1,13 +1,16 @@
-import Navbar from '@/components/navbar'
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from "@tanstack/react-router";
+import { Loader2 } from "lucide-react";
 
-export const Route = createFileRoute('/_authenticated/meal')({
+export const Route = createFileRoute("/_authenticated/meal")({
   component: RouteComponent,
-})
+});
 
 function RouteComponent() {
-  return <div className='h-[200svh]'>
-      <Navbar />
-    <div className='m-10'>dashboard</div>
+  return (
+    <div>
+      <div className=" flex gap-2 items-center">
+        <Loader2 className="size-5 animate-spin stroke-green-500" />
+        In Progress</div>
     </div>
+  );
 }

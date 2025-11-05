@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as OnboardingQuestionsRouteImport } from './routes/_onboarding/questions'
 import { Route as OnboardingIntroRouteImport } from './routes/_onboarding/intro'
 import { Route as AuthenticatedTrackerRouteImport } from './routes/_authenticated/tracker'
@@ -31,6 +32,10 @@ const PrivacyRoute = PrivacyRouteImport.update({
   path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRoute = AuthenticatedRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OnboardingQuestionsRoute = OnboardingQuestionsRouteImport.update({
   id: '/_onboarding/questions',
   path: '/questions',
@@ -42,29 +47,29 @@ const OnboardingIntroRoute = OnboardingIntroRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedTrackerRoute = AuthenticatedTrackerRouteImport.update({
-  id: '/_authenticated/tracker',
+  id: '/tracker',
   path: '/tracker',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
-  id: '/_authenticated/profile',
+  id: '/profile',
   path: '/profile',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedMealRoute = AuthenticatedMealRouteImport.update({
-  id: '/_authenticated/meal',
+  id: '/meal',
   path: '/meal',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedExerciseRoute = AuthenticatedExerciseRouteImport.update({
-  id: '/_authenticated/exercise',
+  id: '/exercise',
   path: '/exercise',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
-  id: '/_authenticated/dashboard',
+  id: '/dashboard',
   path: '/dashboard',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthSignupRoute = AuthSignupRouteImport.update({
   id: '/_auth/signup',
@@ -105,6 +110,7 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
   '/_auth/login': typeof AuthLoginRoute
@@ -146,6 +152,7 @@ export interface FileRouteTypes {
     | '/questions'
   id:
     | '__root__'
+    | '/_authenticated'
     | '/privacy'
     | '/terms'
     | '/_auth/login'
@@ -160,15 +167,11 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   PrivacyRoute: typeof PrivacyRoute
   TermsRoute: typeof TermsRoute
   AuthLoginRoute: typeof AuthLoginRoute
   AuthSignupRoute: typeof AuthSignupRoute
-  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
-  AuthenticatedExerciseRoute: typeof AuthenticatedExerciseRoute
-  AuthenticatedMealRoute: typeof AuthenticatedMealRoute
-  AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
-  AuthenticatedTrackerRoute: typeof AuthenticatedTrackerRoute
   OnboardingIntroRoute: typeof OnboardingIntroRoute
   OnboardingQuestionsRoute: typeof OnboardingQuestionsRoute
 }
@@ -187,6 +190,13 @@ declare module '@tanstack/react-router' {
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthenticatedRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_onboarding/questions': {
@@ -208,35 +218,35 @@ declare module '@tanstack/react-router' {
       path: '/tracker'
       fullPath: '/tracker'
       preLoaderRoute: typeof AuthenticatedTrackerRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/profile': {
       id: '/_authenticated/profile'
       path: '/profile'
       fullPath: '/profile'
       preLoaderRoute: typeof AuthenticatedProfileRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/meal': {
       id: '/_authenticated/meal'
       path: '/meal'
       fullPath: '/meal'
       preLoaderRoute: typeof AuthenticatedMealRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/exercise': {
       id: '/_authenticated/exercise'
       path: '/exercise'
       fullPath: '/exercise'
       preLoaderRoute: typeof AuthenticatedExerciseRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
     '/_auth/signup': {
       id: '/_auth/signup'
@@ -255,16 +265,32 @@ declare module '@tanstack/react-router' {
   }
 }
 
-const rootRouteChildren: RootRouteChildren = {
-  PrivacyRoute: PrivacyRoute,
-  TermsRoute: TermsRoute,
-  AuthLoginRoute: AuthLoginRoute,
-  AuthSignupRoute: AuthSignupRoute,
+interface AuthenticatedRouteChildren {
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedExerciseRoute: typeof AuthenticatedExerciseRoute
+  AuthenticatedMealRoute: typeof AuthenticatedMealRoute
+  AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
+  AuthenticatedTrackerRoute: typeof AuthenticatedTrackerRoute
+}
+
+const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedExerciseRoute: AuthenticatedExerciseRoute,
   AuthenticatedMealRoute: AuthenticatedMealRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedTrackerRoute: AuthenticatedTrackerRoute,
+}
+
+const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
+  AuthenticatedRouteChildren,
+)
+
+const rootRouteChildren: RootRouteChildren = {
+  AuthenticatedRoute: AuthenticatedRouteWithChildren,
+  PrivacyRoute: PrivacyRoute,
+  TermsRoute: TermsRoute,
+  AuthLoginRoute: AuthLoginRoute,
+  AuthSignupRoute: AuthSignupRoute,
   OnboardingIntroRoute: OnboardingIntroRoute,
   OnboardingQuestionsRoute: OnboardingQuestionsRoute,
 }
