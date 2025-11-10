@@ -22,7 +22,7 @@ export default function ProfileIcon() {
       <PopoverTrigger asChild>
         <button
           aria-label="User menu"
-          className="p-2 rounded-full hover:bg-neutral-700/40 transition-colors"
+          className="p-2 rounded-full hover:bg-neutral-700/40 active:bg-neutral-700/60 transition-colors"
         >
           <UserCircle className="size-6 text-neutral-200 hover:text-white transition-colors" />
         </button>

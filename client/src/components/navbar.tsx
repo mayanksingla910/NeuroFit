@@ -38,8 +38,8 @@ export default function Navbar() {
                   className={cn(
                     "text-sm md:text-base font-semibold px-4 py-2 rounded-lg transition-colors",
                     isActive
-                      ? "bg-green-600 hover:bg-green-600/80 text-white shadow-md"
-                      : "text-neutral-200 hover:text-white hover:bg-neutral-700/40"
+                      ? "bg-green-600 hover:bg-green-600/80 active:bg-green-600/90 text-white shadow-md"
+                      : "text-neutral-200 hover:text-white hover:bg-neutral-700/40 active:bg-neutral-700/60"
                   )}
                 >
                   {label}
@@ -83,8 +83,8 @@ export default function Navbar() {
                     className={cn(
                       "text-sm font-semibold px-4 py-2 rounded-lg transition-colors",
                       isActive
-                        ? "bg-green-600 hover:bg-green-600/80 text-white shadow-md"
-                        : "text-neutral-200 hover:text-white hover:bg-neutral-700/40"
+                        ? "bg-green-600 hover:bg-green-600/80 active:bg-green-600/90 text-white shadow-md"
+                        : "text-neutral-200 hover:text-white hover:bg-neutral-700/40 active:bg-neutral-700/60"
                     )}
                   >
                     {label}

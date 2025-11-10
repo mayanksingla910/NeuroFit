@@ -74,19 +74,19 @@ export default function DayPlan() {
 
   return (
     <div className="flex lg:flex-row flex-col gap-4 w-full ">
-      <div className="p-3 w-full lg:w-1/2 rounded-lg border border-neutral-700/60 group">
+      <div className="p-3 w-full lg:w-1/2 rounded-lg border bg-neutral-800/60 backdrop-blur-sm border-neutral-700/60 group">
         <div className="flex justify-between items-center mb-2">
           <h2 className="text-xl text-green-500 font-bold ml-1">Exercises</h2>
           <Button
-            onClick={() => navigate({ to: "/exercise" })}
+            onClick={() => navigate({ to: "/tracker" })}
             variant="link"
             className="text-xs text-neutral-300 group-hover:opacity-100 opacity-0 transition-all duration-200"
           >
             Start Tracking →
           </Button>
         </div>
-        <div className="border-neutral-800/70 border rounded-lg">
-          <div className="mx-3 my-2 flex justify-evenly p-2 text-gray-200 bg-neutral-700/70 backdrop-blur-sm rounded-lg">
+        <div className="border-neutral-700/70 border rounded-lg" >
+          <div className="mx-3 my-2 flex justify-evenly p-2 text-gray-200 bg-neutral-700/70  rounded-lg">
             <h3 className="flex items-center gap-1">
               <Timer className="size-4 text-green-500" />
               {WORKOUT.duration}
@@ -115,7 +115,7 @@ export default function DayPlan() {
           </div>
         </div>
       </div>
-      <div className="p-3 w-full lg:w-1/2 rounded-lg border border-neutral-700/60 group">
+      <div className="p-3 w-full lg:w-1/2 rounded-lg border bg-neutral-800/60 backdrop-blur-sm border-neutral-700/60 group">
         <div className="flex justify-between items-center mb-2">
           <h2 className="text-xl text-green-500 font-bold ml-1">Meals</h2>
           <Button
@@ -126,8 +126,8 @@ export default function DayPlan() {
             Start Tracking →
           </Button>
         </div>
-        <div className="border-neutral-800/70 border rounded-lg">
-          <div className="mx-3 my-2 flex justify-evenly p-2 text-neutral-200 bg-neutral-700/70 backdrop-blur-sm rounded-lg">
+        <div className="border-neutral-700/70 border rounded-lg">
+          <div className="mx-3 my-2 flex justify-evenly p-2 text-neutral-200 bg-neutral-700/70 rounded-lg">
             <h3 className="flex items-center gap-1">
               <Flame className="size-4 text-green-500" />
               Daily Target

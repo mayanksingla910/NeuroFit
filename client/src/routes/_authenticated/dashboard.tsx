@@ -3,10 +3,11 @@ import ChatInput from "@/components/chatInput";
 import WeightChart from "@/components/weightChart";
 import WelcomeCard from "@/components/welcomeCard";
 import { createFileRoute } from "@tanstack/react-router";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import DayPlan from "@/components/dayPlan";
 import { AnimatePresence, motion } from "framer-motion";
 import ChatBubble from "@/components/chatbubble";
+import { UserContext } from "@/context/userContext";
 
 const useScrollLock = (isLocked: boolean) => {
   useEffect(() => {
@@ -36,6 +37,8 @@ function Dashboard() {
   const [isMinimized, setIsMinimized] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
+
+  const { user } = useContext(UserContext);
 
   useScrollLock(viewChat && !isMinimized);
 
@@ -92,11 +95,11 @@ function Dashboard() {
     <div>
       <main
         className={`
-          space-y-10 transition-filter duration-300
+          space-y-6 transition-filter duration-300
           ${viewChat && !isMinimized ? "mb-28 opacity-30 pointer-events-none" : ""} 
           `}
       >
-        <WelcomeCard />
+        <WelcomeCard user ={user}/>
         <ChatInput
           viewChat={viewChat && !isMinimized}
           setViewChat={handleSetViewChat}
@@ -120,7 +123,7 @@ function Dashboard() {
       </AnimatePresence>
       {viewChat && !isMinimized && (
         <motion.div
-          className={`w-full bottom-0 z-50 absolute`}
+          className={`w-full bottom-5 z-50 sticky`}
           animate={{ y: viewChat && !isMinimized ? 0 : "100%" }}
           transition={{ duration: 0.3, delay: 0.3 }}
         >

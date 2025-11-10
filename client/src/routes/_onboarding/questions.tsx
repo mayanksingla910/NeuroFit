@@ -9,8 +9,7 @@ import Step2 from "@/components/onBoardingForm/step2";
 import Step3 from "@/components/onBoardingForm/step3";
 import Step4 from "@/components/onBoardingForm/step4";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import axios from "axios";
-import { backendURL } from "@/lib/backendURL";
+import api from "@/lib/api";
 
 export const Route = createFileRoute("/_onboarding/questions")({
   component: RouteComponent,
@@ -64,9 +63,10 @@ function RouteComponent() {
 
   const handleSubmit = async () => {
     try{
-      const response = await axios.post(`${backendURL}/profile`, form);
+      const response = await api.post(`/profile`, form);
+      const userRes = await api.post("/user", { onboarded: true })
       console.log(response);
-      if (response.data?.success) {
+      if (response.data?.success && userRes.data?.success) {
         navigate({to: "/dashboard"});
       }
     } catch (error) {

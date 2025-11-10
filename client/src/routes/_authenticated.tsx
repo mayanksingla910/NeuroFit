@@ -1,4 +1,5 @@
 import Navbar from "@/components/navbar";
+import { UserProvider } from "@/provider/userProvider";
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_authenticated")({
@@ -14,7 +15,9 @@ function RouteComponent() {
     <div className="min-h-screen font-inter custom-scrollbar">
       <Navbar />
       <main className="w-full md:w-[95%] mx-auto px-6 py-10 ">
-        <Outlet />
+        <UserProvider>
+          <Outlet />
+        </UserProvider>
       </main>
     </div>
   );

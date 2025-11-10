@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import api from "@/lib/api";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
@@ -11,14 +12,36 @@ function RouteComponent() {
   const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(true);
 
+  const form = {
+    age: 18,
+    gender: "Male",
+    height: 180,
+    heightParam: "cm",
+    weight: 70,
+    weightParam: "kg",
+    activityLevel: 2,
+    goal: 4,
+    diet: "No Restriction",
+    allergies: "",
+    description: ""
+  }
+
   const handleContinue = () => {
     setIsVisible(false);
     setTimeout(() => navigate({ to: "/questions" }), 500); 
   };
 
-  const handleSkip = () => {
+  const handleSkip = async () => {
     setIsVisible(false);
-    setTimeout(() => navigate({ to: "/dashboard" }), 500);
+    try{
+      const res = await api.post("/profile", form)
+      const userRes = await api.post("/user", { onboarded: true })
+      if (res.data?.success && userRes.data?.success) {
+        setTimeout(() => navigate({ to: "/dashboard" }), 500);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (

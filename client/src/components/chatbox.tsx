@@ -6,42 +6,64 @@ import { Button } from "./ui/button";
 interface Message {
   id: string;
   text: string;
-  sender: 'user' | 'ai';
+  sender: "user" | "ai";
 }
 
 interface ChatboxProps {
   setViewChat: (shouldView: boolean) => void;
-  handleCloseChat: () => void; 
-  isSending: boolean; 
-  messages: Message[]; 
+  handleCloseChat: () => void;
+  isSending: boolean;
+  messages: Message[];
 }
-export default function Chatbox({ setViewChat, handleCloseChat, isSending, messages }: ChatboxProps) {
+export default function Chatbox({
+  setViewChat,
+  handleCloseChat,
+  isSending,
+  messages,
+}: ChatboxProps) {
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
   const handleMinimize = () => {
-    setViewChat(false); 
+    setViewChat(false);
   };
 
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Escape") {
+      e.preventDefault();
+      handleMinimize();
+    }
+  };
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isSending]);
 
+  useEffect(() => {
+    containerRef.current?.focus();
+  }, []);
+
   const chatboxVariants = {
-    hidden: { y: "100%", opacity: 1},
-    visible: { y: 0, opacity: 1, transition: { type: "spring" as const, stiffness: 100, damping: 20 }},
+    hidden: { y: "100%", opacity: 1 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: { type: "spring" as const, stiffness: 100, damping: 20 },
+    },
     exit: { y: "100%", opacity: 0, transition: { duration: 0.4 } },
   };
 
   return (
     <motion.div
-      className="fixed inset-0 w-full h-full bg-neutral-900/95 backdrop-blur-md z-40" 
+      className="fixed inset-0 w-full h-full bg-neutral-900 z-40"
       variants={chatboxVariants}
+      tabIndex={0}
+      onKeyDown={handleKeyDown}
       initial="hidden"
       animate="visible"
       exit="exit"
     >
-      <div className="flex flex-col h-full max-w-4xl px-auto p-4 md:p-8">
-        
+      <div className="flex flex-col h-full max-w-4xl mx-auto p-4 md:p-8">
         <header className="flex justify-between items-center pb-4 border-b border-neutral-700">
           <h2 className="text-2xl font-bold text-green-500">
             AI Assistant Chat
@@ -56,7 +78,7 @@ export default function Chatbox({ setViewChat, handleCloseChat, isSending, messa
               <Minus className="w-6 h-6" />
             </Button>
             <Button
-              onClick={handleCloseChat} 
+              onClick={handleCloseChat}
               variant="ghost"
               size="icon"
               className="text-gray-400 hover:text-red-500"
@@ -70,17 +92,18 @@ export default function Chatbox({ setViewChat, handleCloseChat, isSending, messa
           <p className="text-neutral-400 text-center text-sm italic mb-4">
             Hello! I'm your AI fitness assistant. I'm ready for your questions.
           </p>
-          
+
           {messages.map((msg) => (
-            <div 
-              key={msg.id} 
-              className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+            <div
+              key={msg.id}
+              className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
             >
-              <div 
+              <div
                 className={`p-3 rounded-xl max-w-sm md:max-w-md shadow-md
-                  ${msg.sender === 'user' 
-                    ? 'bg-green-700/80 text-white rounded-tr-none' 
-                    : 'bg-neutral-700 text-gray-200 rounded-tl-none'
+                  ${
+                    msg.sender === "user"
+                      ? "bg-green-700/80 text-white rounded-tr-none"
+                      : "bg-neutral-700 text-gray-200 rounded-tl-none"
                   }
                 `}
               >

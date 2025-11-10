@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 
 import Step1 from "@/components/onBoardingForm/step1";
@@ -7,6 +7,7 @@ import type { FormData } from "@/types/onboardingForm";
 import ProfileStep from "@/components/profileStep";
 import { Button } from "@/components/ui/button";
 import api from "@/lib/api";
+import { UserContext } from "@/context/userContext";
 
 export const Route = createFileRoute("/_authenticated/profile")({
   component: ProfilePage,
@@ -27,6 +28,8 @@ function ProfilePage() {
     allergies: "",
     description: "",
   });
+
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -82,7 +85,7 @@ function ProfilePage() {
                 <div className="size-28 rounded-full bg-gradient-to-tr from-green-500/60 to-emerald-400/40 p-[2px] shadow-lg">
                   <div className="size-full rounded-full bg-neutral-900 flex items-center justify-center">
                     <span className="text-3xl font-semibold text-green-400">
-                      M
+                      {user.name.toUpperCase().charAt(0)}
                     </span>
                   </div>
                 </div>
@@ -91,11 +94,11 @@ function ProfilePage() {
 
               <div className="text-center flex flex-col items-center gap-2">
                 <h2 className="text-xl font-bold text-gray-100 tracking-wide">
-                  Mayank Singla
+                  {user.name}
                 </h2>
-                <p className="text-sm text-neutral-400 font-medium">Mayank</p>
+                <p className="text-sm text-neutral-400 font-medium">{user.username}</p>
                 <p className="text-xs text-neutral-500 mt-1">
-                  singlamayank10@gmail.com
+                  {user.email}
                 </p>
               </div>
             </div>

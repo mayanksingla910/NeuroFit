@@ -3,13 +3,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFire, faMedal } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "@tanstack/react-router";
 
-export default function WelcomeCard() {
+export default function WelcomeCard({user}: {user: {name: string}}) {
   const navigate = useNavigate();
+
+  const name = user.name.split(" ")[0];
 
   return (
     <div className="flex flex-col lg:flex-row justify-between md:items-center gap-8 p-6 bg-neutral-800/70 border border-neutral-700/60 shadow-md backdrop-blur-md hover:border-green-600/60 transition-all rounded-xl">
       <div className="flex-1 sm:w-full lg:w-1/2 2xl:w-2/3">
-        <h1 className="text-3xl font-semibold text-gray-100">Hey Mayank</h1>
+        <h1 className="text-3xl font-bold text-gray-100">Hey {name}</h1>
         <p className="text-neutral-400 text-base mt-2">
           Ready to crush today’s fitness goals?
         </p>

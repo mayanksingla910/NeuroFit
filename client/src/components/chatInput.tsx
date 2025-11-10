@@ -57,7 +57,7 @@ export default function ChatInput({
     >
       <div
         className={`
-          relative w-full  focus-within:w-full md:focus-within:w-[93%]
+          relative w-full focus-within:w-full md:focus-within:w-[93%]
           transition-all duration-300 origin-right group
           ${viewChat ? "w-full" : ""}
         `}
