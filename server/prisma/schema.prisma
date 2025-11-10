@@ -21,6 +21,7 @@ model User {
   WeightLog     WeightLog[]
   DailySummary  DailySummary[]
   MealPlan      MealPlan[]
+  loggedMeal    loggedMeal[]
 }
 
 model Profile {
@@ -81,4 +82,18 @@ model Meal {
   mealPlanId   Int
 
   mealPlan     MealPlan @relation(fields: [mealPlanId], references: [id], onDelete: Cascade)
+}
+
+model loggedMeal {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  name         String
+  summary      String
+  calories     Int
+  protien      Int
+  carbs        Int
+  fat          Int
+  loggedAt     DateTime @default(now())
+
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

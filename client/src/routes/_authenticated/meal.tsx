@@ -1,5 +1,7 @@
+import LogMealCard from "@/components/logMealCard";
+import MealCard from "@/components/mealCard";
+import MealPlanCard from "@/components/mealPlanCard";
 import { createFileRoute } from "@tanstack/react-router";
-import { Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/meal")({
   component: RouteComponent,
@@ -8,9 +10,11 @@ export const Route = createFileRoute("/_authenticated/meal")({
 function RouteComponent() {
   return (
     <div>
-      <div className=" flex gap-2 items-center">
-        <Loader2 className="size-5 animate-spin stroke-green-500" />
-        In Progress</div>
+      <main className={`space-y-6 transition-filter duration-300`}>
+        <MealCard />
+        <LogMealCard />
+        <MealPlanCard />
+      </main>
     </div>
   );
 }
