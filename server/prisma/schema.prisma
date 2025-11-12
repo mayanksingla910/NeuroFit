@@ -21,7 +21,7 @@ model User {
   WeightLog     WeightLog[]
   DailySummary  DailySummary[]
   MealPlan      MealPlan[]
-  loggedMeal    loggedMeal[]
+  loggedMeals    loggedMeal[]
 }
 
 model Profile {
@@ -88,9 +88,9 @@ model loggedMeal {
   id           Int      @id @default(autoincrement())
   userId       Int
   name         String
-  summary      String
+  description  String
   calories     Int
-  protien      Int
+  protein      Int
   carbs        Int
   fat          Int
   loggedAt     DateTime @default(now())
