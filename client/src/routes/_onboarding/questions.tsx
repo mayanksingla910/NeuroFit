@@ -64,7 +64,7 @@ function RouteComponent() {
   const handleSubmit = async () => {
     try{
       const response = await api.post(`/profile`, form);
-      const userRes = await api.post("/user", { onboarded: true })
+      const userRes = await api.put("/user", { onboarded: true })
       console.log(response);
       if (response.data?.success && userRes.data?.success) {
         navigate({to: "/dashboard"});

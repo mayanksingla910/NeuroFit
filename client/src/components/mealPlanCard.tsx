@@ -88,8 +88,10 @@ const MEAL = {
     ]
 };
 
+const day = new Date().getDay();
+
 const MealPlanCard = () => {
-  const [selectedDay, setSelectedDay] = useState(0);
+  const [selectedDay, setSelectedDay] = useState(day-1);
   const [direction, setDirection] = useState(1);
 
   const dayPlan = MEAL.weeklyPlan[selectedDay];

@@ -54,7 +54,6 @@ export const updateUser = async (req:AuthRequest, res:Response) => {
         return res.status(200).json({
             success: true,
             message: 'User updated successfully',
-            data: user,
         });
     }catch(err){
         console.error('Error updating user:', err);

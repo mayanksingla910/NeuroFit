@@ -2,15 +2,16 @@ import type { Nutrition } from "@/types/logMeal";
 
 const parameter = ["Calories", "Protein", "Carbs", "Fat"];
 
+const now = new Date();
+const formatted = now.toLocaleString("en-US", {
+  weekday: "long",
+  month: "short",
+  day: "numeric",
+});
+
 const MealCard = ({nutrition}: {nutrition: Nutrition}) => {
   
 
-  const now = new Date();
-  const formatted = now.toLocaleString("en-US", {
-    weekday: "long",
-    month: "short",
-    day: "numeric",
-  });
 
   return (
     <div className="flex flex-col lg:flex-row justify-between lg:items-center gap-8 p-6 bg-neutral-800/70 border border-neutral-700/60 shadow-md backdrop-blur-md hover:border-green-600/60 transition-all rounded-xl">

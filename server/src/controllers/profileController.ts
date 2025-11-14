@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import type { Request, Response } from "express";
+import { is } from "zod/locales";
 
 const prisma = new PrismaClient();
 
@@ -56,14 +57,14 @@ export const postProfile = async (req: AuthRequest, res: Response) => {
 
     const isOnboarded = await prisma.user.findUnique({
       where: { id: userId },
-      select: { onboarded: true },
+      select: { onboarded:true },
     });
 
-    if (isOnboarded) {
-      return res.status(401).json({ message: "User already onboarded" });
+    if (isOnboarded?.onboarded) {
+      return res.status(401).json({ message: "User already onboarded", data:isOnboarded });
     }
 
-    const profile = await prisma.profile.create({
+    await prisma.profile.create({
       data: {
         userId: userId,
         age: age,
@@ -83,7 +84,6 @@ export const postProfile = async (req: AuthRequest, res: Response) => {
     return res.status(201).json({
       success: true,
       message: "Profile created successfully",
-      data: profile,
     });
   } catch (err) {
     console.error(err);
@@ -120,7 +120,7 @@ export const updateProfile = async (req: AuthRequest, res: Response) => {
       return res.status(404).json({ message: "Profile not found" });
     }
 
-    const profile = await prisma.profile.update({
+    await prisma.profile.update({
       where: { id: existingProfile.id },
       data: {
         age: age,
@@ -140,7 +140,6 @@ export const updateProfile = async (req: AuthRequest, res: Response) => {
     return res.status(200).json({
       success: true,
       message: "Profile updated successfully",
-      data: profile,
     });
   } catch (err) {
     console.error(err);

@@ -1,6 +1,5 @@
 import { PrismaClient } from "@prisma/client";
 import type { Request, Response } from "express";
-import { success } from "zod";
 
 const prisma = new PrismaClient();
 
@@ -55,7 +54,8 @@ export const getLoggedMeals = async (req: AuthRequest, res: Response) => {
       where: {
         userId,
         loggedAt: {
-          gte: new Date(new Date().setDate(new Date().getDate() - 7)),
+          gte: new Date(new Date().setHours(0, 0, 0, 0)),
+          lte: new Date(new Date().setHours(23, 59, 59, 999)),
         },
       },
       orderBy: { loggedAt: "desc" },

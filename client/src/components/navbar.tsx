@@ -19,7 +19,7 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="sticky top-5 mx-auto z-30 w-[95%] px-6 py-3 rounded-2xl backdrop-blur-md bg-neutral-800/60 border border-neutral-700/30 hover:shadow-md transition-all">
+    <nav className="sticky top-5 mx-auto z-30 w-[95%] px-6 py-4 rounded-xl backdrop-blur-md bg-neutral-800/40 border border-neutral-700/70 hover:shadow-md transition-all">
       <div className="flex justify-between items-center">
         <Link
           to="/dashboard"

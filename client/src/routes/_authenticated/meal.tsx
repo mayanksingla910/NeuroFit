@@ -51,7 +51,7 @@ function RouteComponent() {
 
   return (
     <div>
-      <main className={`space-y-6 transition-filter duration-300`}>
+      <main className={`space-y-6 transition-all duration-300`}>
         <MealCard nutrition={nutrition} />
         <LogMealCard
           loggedMeals={loggedMeals}
