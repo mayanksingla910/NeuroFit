@@ -42,39 +42,48 @@ function Dashboard() {
 
   useScrollLock(viewChat && !isMinimized);
 
-  const mockAiResponse = (userMessage: string): string => {
-    if (userMessage.toLowerCase().includes("macros")) {
-      return "Based on your goal to lose weight, your target macros are 180g Protein, 150g Carbs, and 60g Fat.";
-    }
-    if (userMessage.toLowerCase().includes("workout")) {
-      return "Your personalized workout for today is a Full Body Circuit: Warm-up, 3 sets of Squats, Bench Press, and Rows, followed by a cool-down stretch.";
-    }
-    return "I'm not sure how to respond to that, but I can help you with your fitness goals, macros, and workout plans!";
+
+  const handleSendMessage = async (text: string) => {
+  const newUserMessage: Message = {
+    id: Date.now().toString(),
+    text,
+    sender: "user",
   };
 
-  const handleSendMessage = (text: string) => {
-    const newUserMessage: Message = {
-      id: Date.now().toString(),
-      text,
-      sender: "user",
+  // Add user message to UI
+  setMessages((prev) => [...prev, newUserMessage]);
+  setIsSending(true);
+
+  try {
+    const res = await fetch("http://localhost:8000/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: text }),
+    });
+
+    const data = await res.json();
+
+    const newAiMessage: Message = {
+      id: (Date.now() + 1).toString(),
+      text: data.reply,
+      sender: "ai",
     };
 
-    setMessages((prev) => [...prev, newUserMessage]);
-    setIsSending(true);
+    setMessages((prev) => [...prev, newAiMessage]);
+  } catch (error) {
+    console.error("Error:", error);
 
-    setTimeout(() => {
-      const aiResponseText = mockAiResponse(text);
-      const newAiMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        text: aiResponseText,
-        sender: "ai",
-      };
+    const errorMessage: Message = {
+      id: (Date.now() + 2).toString(),
+      text: "Something went wrong. Please try again.",
+      sender: "ai",
+    };
 
-      setMessages((prev) => [...prev, newAiMessage]);
-      setIsSending(false);
-    }, 1500);
-  };
+    setMessages((prev) => [...prev, errorMessage]);
+  }
 
+  setIsSending(false);
+};
   const handleSetViewChat = (shouldView: boolean) => {
     if (shouldView) {
       setViewChat(true);
