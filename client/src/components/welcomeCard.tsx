@@ -9,7 +9,7 @@ export default function WelcomeCard({user}: {user: {name: string}}) {
   const name = user.name.split(" ")[0];
 
   return (
-    <div className="flex flex-col lg:flex-row justify-between md:items-center gap-8 p-6 bg-neutral-800/70 border border-neutral-700/60 shadow-md backdrop-blur-md hover:border-green-600/60 transition-all rounded-xl">
+    <div className="flex flex-col lg:flex-row justify-between md:items-center gap-8 p-6 bg-neutral-800/70 border hover:shadow-[0_2px_8px_rgb(0,0,0.1)] backdrop-blur-md shadow-amber-50/20 hover:-translate-y-1 transition-all duration-300 rounded-xl">
       <div className="flex-1 sm:w-full lg:w-1/2 2xl:w-2/3">
         <h1 className="text-3xl font-bold text-gray-100">Hey {name}</h1>
         <p className="text-neutral-400 text-base mt-2">

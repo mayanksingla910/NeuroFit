@@ -1,6 +1,23 @@
 export const workoutPlan = [
   // Day 1: Monday - Push (Chest, Shoulders, Triceps)
   {
+    day: "Sunday",
+    focus: "Complete Rest",
+    exercises: [
+      {
+        id: "R003",
+        name: "Rest Day",
+        description:
+          "Allow muscles and central nervous system to recover completely. Focus on hydration and quality sleep.",
+        image:
+          "https://tse3.mm.bing.net/th/id/OIP.vXzXpt_OuMCDtlI8ZQN9RwHaDt?cb=ucfimg2ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3",
+        sets: 0,
+        reps: "N/A",
+        time: "All Day",
+      },
+    ],
+  },
+  {
     day: "Monday",
     focus: "Upper Body: Push Strength",
     exercises: [
@@ -31,8 +48,7 @@ export const workoutPlan = [
         name: "Lateral Raise (Dumbbell)",
         description:
           "Stand tall with dumbbells at your sides. With a slight bend in your elbow, raise the dumbbells out to the sides until your arms are parallel to the floor. Focus on using your side deltoids, not momentum. Lower slowly.",
-        image:
-          "https://i.ytimg.com/vi/XPPfnSEATJA/maxresdefault.jpg",
+        image: "https://i.ytimg.com/vi/XPPfnSEATJA/maxresdefault.jpg",
         sets: 3,
         reps: "12-15",
         time: null,
@@ -71,8 +87,7 @@ export const workoutPlan = [
         name: "Pull-Up (Overhand Grip)",
         description:
           "Grip the bar slightly wider than shoulder-width. Start from a dead hang. Engage your lats and pull your chest toward the bar until your chin clears it. Lower down slowly and controlled.",
-        image:
-          "https://i.ytimg.com/vi/EUdJ5mGMGnU/maxresdefault.jpg",
+        image: "https://i.ytimg.com/vi/EUdJ5mGMGnU/maxresdefault.jpg",
         sets: 4,
         reps: "Max Reps",
         time: null,
@@ -104,8 +119,7 @@ export const workoutPlan = [
         name: "Face Pull (Rope Attachment)",
         description:
           "Attach a rope to a high pulley. Grab the rope with palms facing each other. Pull the rope towards your face, pulling your hands apart and squeezing your rear shoulder muscles (rear deltoids and upper back).",
-        image:
-          "https://i.ytimg.com/vi/0YNQPMLNn2Q/maxresdefault.jpg",
+        image: "https://i.ytimg.com/vi/0YNQPMLNn2Q/maxresdefault.jpg",
         sets: 3,
         reps: "15-20",
         time: null,
@@ -202,8 +216,7 @@ export const workoutPlan = [
         name: "Kettlebell Swing (Russian)",
         description:
           "Hinge at the hips (like a deadlift, not a squat), let the bell hang. Drive your hips forward explosively, engaging your glutes and core to swing the bell up to chest height. Control the descent back down.",
-        image:
-          "https://i.ytimg.com/vi/LtPgaWlObDE/maxresdefault.jpg",
+        image: "https://i.ytimg.com/vi/LtPgaWlObDE/maxresdefault.jpg",
         sets: 4,
         reps: "15-20",
         time: null,
@@ -275,8 +288,7 @@ export const workoutPlan = [
         name: "Lateral Raise (Dumbbell)",
         description:
           "Stand tall with dumbbells at your sides. With a slight bend in your elbow, raise the dumbbells out to the sides until your arms are parallel to the floor. Focus on using your side deltoids, not momentum. Lower slowly.",
-        image:
-          "https://i.ytimg.com/vi/XPPfnSEATJA/maxresdefault.jpg",
+        image: "https://i.ytimg.com/vi/XPPfnSEATJA/maxresdefault.jpg",
         sets: 4,
         reps: "15-20",
         time: null,
@@ -305,22 +317,4 @@ export const workoutPlan = [
       },
     ],
   }, // Day 7: Sunday - Complete Rest
-
-  {
-    day: "Sunday",
-    focus: "Complete Rest",
-    exercises: [
-      {
-        id: "R003",
-        name: "Rest Day",
-        description:
-          "Allow muscles and central nervous system to recover completely. Focus on hydration and quality sleep.",
-        image:
-          "https://tse3.mm.bing.net/th/id/OIP.vXzXpt_OuMCDtlI8ZQN9RwHaDt?cb=ucfimg2ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3",
-        sets: 0,
-        reps: "N/A",
-        time: "All Day",
-      },
-    ],
-  },
 ];

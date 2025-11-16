@@ -2,14 +2,23 @@ import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 import { Button } from "./ui/button";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import type { WorkoutPlan } from "@/types/workout";
+import type { LoggedWorkout, WorkoutPlan } from "@/types/workout";
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import WorkoutDetailsDialog from "./workoutDetailsDialog";
+import api from "@/lib/api";
 
 const day = new Date().getDay();
 
-const WorkoutPlanCard = ({ workoutPlan }: { workoutPlan: WorkoutPlan[] }) => {
-  const [selectedDay, setSelectedDay] = useState(day-1);
+type LoggedWorkoutInput = Omit<LoggedWorkout, "id">;
+
+const WorkoutPlanCard = ({
+  workoutPlan,
+  setLoggedWorkouts,
+}: {
+  workoutPlan: WorkoutPlan[];
+  setLoggedWorkouts: React.Dispatch<React.SetStateAction<LoggedWorkout[]>>;
+}) => {
+  const [selectedDay, setSelectedDay] = useState(day);
   const [direction, setDirection] = useState(1);
 
   const dayPlan = workoutPlan[selectedDay];
@@ -34,8 +43,23 @@ const WorkoutPlanCard = ({ workoutPlan }: { workoutPlan: WorkoutPlan[] }) => {
     setSelectedDay((prev) => (prev === workoutPlan.length - 1 ? 0 : prev + 1));
   };
 
+  const handleLogWorkout = async (
+    e: React.MouseEvent,
+    workout: LoggedWorkoutInput,
+  ) => {
+    e.stopPropagation();
+    try {
+      const res = await api.post(`/logWorkout`, workout);
+      if (res.data.success) {
+        setLoggedWorkouts((prev) => [res.data.data, ...prev]);
+      }
+    } catch (error) {
+      console.error("Error logging workout:", error);
+    }
+  };
+
   return (
-    <div className="flex flex-col gap-2 p-6 bg-neutral-800/70 border transition-transform border-neutral-700/60 shadow-md backdrop-blur-md rounded-xl">
+    <div className="flex flex-col gap-2 p-6  transition-transform  rounded-xl">
       <div className="w-full flex justify-between items-center mb-2">
         <h2 className="text-xl text-green-500 font-bold ml-1">Workouts</h2>
         <div className="flex items-center mr-2">
@@ -78,18 +102,17 @@ const WorkoutPlanCard = ({ workoutPlan }: { workoutPlan: WorkoutPlan[] }) => {
           animate="animate"
           exit="exit"
           transition={{ duration: 0.2, ease: "easeInOut" }}
-          className="m-2 w-full flex flex-col"
+          className=" w-full flex flex-col"
           layout
         >
-          <div className="font-semibold text-sm ml-auto mr-5 my-5">
+          <div className="font-semibold text-sm ml-auto mr-5 my-2">
             <p>{dayPlan.focus}</p>
           </div>
           <div className="flex flex-wrap md:gap-4 ">
-            {dayPlan.exercises.map((exercise) => (
-              <Dialog>
+            {dayPlan.exercises.map((exercise,i) => (
+              <Dialog key={i}>
                 <DialogTrigger asChild>
                   <div
-                    key={exercise.id}
                     className="relative group flex flex-col gap-2 p-3 text-NEUTRAL-200 hover:bg-neutral-700/40 rounded-md w-[50%] md:w-[30%] lg:w-[22%] xl:w-[24%] hover:scale-105 transition-transform duration-300"
                   >
                     <div className="rounded-md">
@@ -102,7 +125,7 @@ const WorkoutPlanCard = ({ workoutPlan }: { workoutPlan: WorkoutPlan[] }) => {
                     <h3 className="font-medium text-sm sm:text-base text-green-500">
                       {exercise.name}
                     </h3>
-                    {exercise.sets !==0 && (
+                    {exercise.sets !== 0 && (
                       <h3 className="flex text-xs items-center font-medium text-neutral-300">
                         Sets: {exercise.sets}
                       </h3>
@@ -119,9 +142,7 @@ const WorkoutPlanCard = ({ workoutPlan }: { workoutPlan: WorkoutPlan[] }) => {
                     )}
                     <Button
                       variant="outline"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                      }}
+                      onClick={(e) => handleLogWorkout(e, exercise)}
                       className="absolute bottom-3 right-3 bg-inherit flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                     >
                       <Plus />

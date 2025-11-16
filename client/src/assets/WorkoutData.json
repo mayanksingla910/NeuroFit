@@ -1,0 +1,98 @@
+[
+{
+"id": "E001",
+"name": "Barbell Back Squat",
+"description": "Stand shoulder-width apart, keep your chest up, and brace your core. Lower your hips as if sitting in a chair until thighs are parallel to the floor. Drive through your heels to stand. Focus on depth and spinal neutrality.",
+"image": "https://www.google.com/search?q=https://placehold.co/1280x720/1e293b/f5f5f5%3Ftext%3DBarbell%2BSquat"
+},
+{
+"id": "E002",
+"name": "Dumbbell Bench Press",
+"description": "Lie on a bench, holding dumbbells at chest height. Keep your shoulder blades squeezed together. Press the dumbbells straight up until your arms are fully extended. Lower slowly, maintaining control.",
+"image": "https://www.google.com/search?q=https://placehold.co/1280x720/0f766e/f5f5f5%3Ftext%3DDumbbell%2BPress"
+},
+{
+"id": "E003",
+"name": "Barbell Deadlift (Conventional)",
+"description": "Stand with feet hip-width apart. Hinge at the hips, keeping a flat back, and grip the bar. Drive through your heels, extending hips and knees simultaneously. Keep the bar close to your body throughout the lift.",
+"image": "https://www.google.com/search?q=https://placehold.co/1280x720/4338ca/f5f5f5%3Ftext%3DDeadlift"
+},
+{
+"id": "E004",
+"name": "Pull-Up (Overhand Grip)",
+"description": "Grip the bar slightly wider than shoulder-width. Start from a dead hang. Engage your lats and pull your chest toward the bar until your chin clears it. Lower down slowly and controlled.",
+"image": "https://www.google.com/search?q=https://placehold.co/1280x720/a16207/f5f5f5%3Ftext%3DPull%2BUp"
+},
+{
+"id": "E005",
+"name": "Overhead Press (Standing)",
+"description": "Start with the barbell racked at collarbone height. Brace your core tightly and slightly tuck your chin. Press the bar straight overhead, moving your head slightly forward as the bar passes. Finish with arms locked out.",
+"image": "https://www.google.com/search?q=https://placehold.co/1280x720/ef4444/f5f5f5%3Ftext%3DOverhead%2BPress"
+},
+{
+"id": "E006",
+"name": "Bent-Over Barbell Row",
+"description": "Hinge at the hips to about 45 degrees, keeping your back straight. Let the bar hang. Pull the bar up toward your belly button, squeezing your shoulder blades together. Control the weight back down.",
+"image": "https://www.google.com/search?q=https://placehold.co/1280x720/15803d/f5f5f5%3Ftext%3DBarbell%2BRow"
+},
+{
+"id": "E007",
+"name": "Walking Lunges (Dumbbell)",
+"description": "Take a step forward and lower your hips until both knees are bent at a 90-degree angle. Ensure your front knee stays over your ankle. Push off your back foot to step into the next lunge. Maintain balance and stability.",
+"image": "https://www.google.com/search?q=https://placehold.co/1280x720/be185d/f5f5f5%3Ftext%3DWalking%2BLunges"
+},
+{
+"id": "E008",
+"name": "Lateral Raise (Dumbbell)",
+"description": "Stand tall with dumbbells at your sides. With a slight bend in your elbow, raise the dumbbells out to the sides until your arms are parallel to the floor. Focus on using your side deltoids, not momentum. Lower slowly.",
+"image": "https://www.google.com/search?q=https://placehold.co/1280x720/6d28d9/f5f5f5%3Ftext%3DLateral%2BRaise"
+},
+{
+"id": "E009",
+"name": "Triceps Rope Pushdown",
+"description": "Attach a rope to a high pulley. Keep your elbows tucked in and close to your sides. Push the rope down until your arms are fully straight, squeezing the triceps at the bottom. Only your forearms should move.",
+"image": "https://www.google.com/search?q=https://placehold.co/1280x720/ca8a04/f5f5f5%3Ftext%3DTricep%2BPushdown"
+},
+{
+"id": "E010",
+"name": "Hammer Bicep Curl",
+"description": "Hold dumbbells with palms facing your body (neutral grip). Keep your upper arms stationary and curl the weights up toward your shoulders. Squeeze the biceps and lower the weights with control.",
+"image": "https://www.google.com/search?q=https://placehold.co/1280x720/0284c7/f5f5f5%3Ftext%3DHammer%2BCurl"
+},
+{
+"id": "E011",
+"name": "Plank (Forearm)",
+"description": "Rest on your forearms and toes, forming a straight line from head to heels. Engage your core and glutes to prevent your hips from sagging or rising too high. Hold for time, focusing on deep, controlled breathing.",
+"image": "https://www.google.com/search?q=https://placehold.co/1280x720/14b8a6/f5f5f5%3Ftext%3DPlank%2BHold"
+},
+{
+"id": "E012",
+"name": "Kettlebell Swing (Russian)",
+"description": "Hinge at the hips (like a deadlift, not a squat), let the bell hang. Drive your hips forward explosively, engaging your glutes and core to swing the bell up to chest height. Control the descent back down.",
+"image": "https://www.google.com/search?q=https://placehold.co/1280x720/e11d48/f5f5f5%3Ftext%3DKettlebell%2BSwing"
+},
+{
+"id": "E013",
+"name": "Burpee",
+"description": "Start standing, drop into a plank position, perform a push-up (optional), jump feet back in, and explode upward into a vertical jump with hands over your head. Focus on continuous, fast repetitions.",
+"image": "https://www.google.com/search?q=https://placehold.co/1280x720/92400e/f5f5f5%3Ftext%3DBurpees"
+},
+{
+"id": "E014",
+"name": "Russian Twist",
+"description": "Sit with knees bent and feet slightly elevated (optional, for difficulty). Hold a weight or ball. Lean back slightly, keeping your back straight. Rotate your torso, tapping the weight on the floor on both sides.",
+"image": "https://www.google.com/search?q=https://placehold.co/1280x720/4c0519/f5f5f5%3Ftext%3DRussian%2BTwist"
+},
+{
+"id": "E015",
+"name": "Box Jump",
+"description": "Stand facing a sturdy box. Bend your knees slightly and swing your arms back, then explode up onto the box, landing softly with both feet simultaneously. Step or jump carefully back down and reset.",
+"image": "https://www.google.com/search?q=https://placehold.co/1280x720/4f46e5/f5f5f5%3Ftext%3DBox%2BJump"
+},
+{
+"id": "E016",
+"name": "Face Pull (Rope Attachment)",
+"description": "Attach a rope to a high pulley. Grab the rope with palms facing each other. Pull the rope towards your face, pulling your hands apart and squeezing your rear shoulder muscles (rear deltoids and upper back).",
+"image": "https://www.google.com/search?q=https://placehold.co/1280x720/7e22ce/f5f5f5%3Ftext%3DFace%2BPull"
+}
+]

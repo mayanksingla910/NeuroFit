@@ -10,7 +10,7 @@ const formatted = now.toLocaleString("en-US", {
 
 const ExerciseCard = () => {
   return (
-    <div className="flex flex-col lg:flex-row justify-between lg:items-center gap-8 p-6 bg-neutral-800/70 border border-neutral-700/60 shadow-md backdrop-blur-md hover:border-green-600/60 transition-all rounded-xl">
+    <div className="flex flex-col lg:flex-row justify-between lg:items-center gap-8 p-6 bg-neutral-800/70 border hover:shadow-[0_2px_8px_rgb(0,0,0.1)] backdrop-blur-md shadow-amber-50/20 hover:-translate-y-1 transition-all duration-300 rounded-xl">
       <div>
         <h1 className="font-bold text-2xl text-neutral-100">Daily Total</h1>
         <p className="text-green-600/90 font-semibold">{formatted}</p>
@@ -39,7 +39,7 @@ const ExerciseCard = () => {
             />
             Calories Burned
           </h2>
-          <p className="text-3xl font-bold text-green-500 mt-2">3,250</p>
+          <p className="text-3xl font-bold text-green-500 mt-2">285</p>
           <p className="text-neutral-400 text-sm mt-1">Good Work!</p>
         </div>
       </div>

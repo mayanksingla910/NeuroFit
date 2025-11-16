@@ -22,6 +22,7 @@ model User {
   DailySummary  DailySummary[]
   MealPlan      MealPlan[]
   loggedMeals    loggedMeal[]
+  loggedWorkouts loggedWorkout[]
 }
 
 model Profile {
@@ -93,6 +94,19 @@ model loggedMeal {
   protein      Int
   carbs        Int
   fat          Int
+  loggedAt     DateTime @default(now())
+
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model loggedWorkout {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  name         String
+  image        String
+  sets         Int
+  reps         String?
+  time         String?
   loggedAt     DateTime @default(now())
 
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
