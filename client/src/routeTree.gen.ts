@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as OnboardingQuestionsRouteImport } from './routes/_onboarding/questions'
 import { Route as OnboardingIntroRouteImport } from './routes/_onboarding/intro'
 import { Route as AuthenticatedTrackerRouteImport } from './routes/_authenticated/tracker'
@@ -34,6 +35,11 @@ const PrivacyRoute = PrivacyRouteImport.update({
 } as any)
 const AuthenticatedRoute = AuthenticatedRouteImport.update({
   id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OnboardingQuestionsRoute = OnboardingQuestionsRouteImport.update({
@@ -83,6 +89,7 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
   '/login': typeof AuthLoginRoute
@@ -96,6 +103,7 @@ export interface FileRoutesByFullPath {
   '/questions': typeof OnboardingQuestionsRoute
 }
 export interface FileRoutesByTo {
+  '/': typeof IndexRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
   '/login': typeof AuthLoginRoute
@@ -110,6 +118,7 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
@@ -126,6 +135,7 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/'
     | '/privacy'
     | '/terms'
     | '/login'
@@ -139,6 +149,7 @@ export interface FileRouteTypes {
     | '/questions'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/'
     | '/privacy'
     | '/terms'
     | '/login'
@@ -152,6 +163,7 @@ export interface FileRouteTypes {
     | '/questions'
   id:
     | '__root__'
+    | '/'
     | '/_authenticated'
     | '/privacy'
     | '/terms'
@@ -167,6 +179,7 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   PrivacyRoute: typeof PrivacyRoute
   TermsRoute: typeof TermsRoute
@@ -197,6 +210,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: ''
       preLoaderRoute: typeof AuthenticatedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_onboarding/questions': {
@@ -286,6 +306,7 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
 )
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   PrivacyRoute: PrivacyRoute,
   TermsRoute: TermsRoute,

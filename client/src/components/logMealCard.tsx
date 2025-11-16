@@ -33,7 +33,7 @@ const LogMealCard = ({loggedMeals, setLoggedMeals}: {loggedMeals: LoggedMeal[], 
   };
 
   return (
-    <div className="flex flex-col gap-4 p-6 bg-neutral-800/70 border border-neutral-700/60 shadow-md backdrop-blur-md rounded-xl">
+    <div className="flex flex-col gap-4 p-6 bg-neutral-800/70 hover:shadow-[0_2px_10px_rgb(0,0,0,0.1)] shadow-amber-50/20 transition-shadow duration-300 backdrop-blur-md rounded-xl">
       <div className="flex justify-between items-end">
         <h1 className="text-green-500 font-bold text-xl">Today's Meals</h1>
         <Dialog>

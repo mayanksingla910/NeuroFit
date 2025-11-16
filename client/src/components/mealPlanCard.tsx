@@ -6,9 +6,20 @@ import { motion, AnimatePresence } from "framer-motion";
 
 // Mock meal plan data for the week
 const MEAL = {
-    calorieGoal: "2,500 kcal/day", 
-    weeklyPlan: [
-        {
+  calorieGoal: "2,500 kcal/day", 
+  weeklyPlan: [
+    {
+        day: "Sunday",
+        meals: [
+            { name: "Breakfast", summary: "Scrambled Eggs (3), Spinach, & Whole Grain Tortilla", calories: 490, macros: "P: 30g, C: 45g, F: 20g" },
+            { name: "Snack 1", summary: "Orange", calories: 70, macros: "P: 1g, C: 15g, F: 0g" },
+            { name: "Lunch", summary: "Leftover Steak & Veggies from Saturday", calories: 650, macros: "P: 50g, C: 35g, F: 35g" },
+            { name: "Snack 2", summary: "Edamame Pods", calories: 180, macros: "P: 15g, C: 15g, F: 5g" },
+            { name: "Dinner", summary: "Large Turkey Chili Bowl with Avocado", calories: 780, macros: "P: 65g, C: 70g, F: 25g" }
+        ],
+        dailyTotal: "2170 kcal"
+    },
+    {
             day: "Monday",
             meals: [
                 { name: "Breakfast", summary: "Greek Yogurt, Mixed Berries, & Nuts", calories: 420, macros: "P: 25g, C: 45g, F: 18g" },
@@ -74,24 +85,13 @@ const MEAL = {
             ],
             dailyTotal: "2750 kcal"
         },
-        {
-            day: "Sunday",
-            meals: [
-                { name: "Breakfast", summary: "Scrambled Eggs (3), Spinach, & Whole Grain Tortilla", calories: 490, macros: "P: 30g, C: 45g, F: 20g" },
-                { name: "Snack 1", summary: "Orange", calories: 70, macros: "P: 1g, C: 15g, F: 0g" },
-                { name: "Lunch", summary: "Leftover Steak & Veggies from Saturday", calories: 650, macros: "P: 50g, C: 35g, F: 35g" },
-                { name: "Snack 2", summary: "Edamame Pods", calories: 180, macros: "P: 15g, C: 15g, F: 5g" },
-                { name: "Dinner", summary: "Large Turkey Chili Bowl with Avocado", calories: 780, macros: "P: 65g, C: 70g, F: 25g" }
-            ],
-            dailyTotal: "2170 kcal"
-        },
     ]
 };
 
 const day = new Date().getDay();
 
 const MealPlanCard = () => {
-  const [selectedDay, setSelectedDay] = useState(day-1);
+  const [selectedDay, setSelectedDay] = useState(day);
   const [direction, setDirection] = useState(1);
 
   const dayPlan = MEAL.weeklyPlan[selectedDay];
@@ -121,7 +121,7 @@ const MealPlanCard = () => {
   };
 
   return (
-    <div className="flex flex-col justify-between items-center gap-4 p-4 sm:p-6 bg-neutral-800/70 border border-neutral-700/60 shadow-md backdrop-blur-md transition-all rounded-xl">
+    <div className="flex flex-col justify-between items-center gap-4 p-4 sm:p-6 bg-neutral-800/70  border-neutral-700/60 shadow-md backdrop-blur-md transition-all rounded-xl">
       <div className="w-full flex justify-between items-center mb-2">
         <h2 className="text-xl text-green-500 font-bold ml-1">Meals</h2>
         <div className="flex items-center mr-2">

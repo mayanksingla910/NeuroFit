@@ -74,7 +74,7 @@ export default function DayPlan() {
 
   return (
     <div className="flex lg:flex-row flex-col gap-4 w-full ">
-      <div className="p-3 w-full lg:w-1/2 rounded-lg border bg-neutral-800/60 backdrop-blur-sm border-neutral-700/60 group">
+      <div className="p-3 w-full lg:w-1/2 rounded-lg border bg-neutral-800/60 backdrop-blur-sm border-neutral-700/60 hover:shadow-[0_2px_10px_rgb(0,0,0,0.1)] shadow-amber-50/15 transition-shadow duration-300  group">
         <div className="flex justify-between items-center mb-2">
           <h2 className="text-xl text-green-500 font-bold ml-1">Exercises</h2>
           <Button
@@ -115,7 +115,7 @@ export default function DayPlan() {
           </div>
         </div>
       </div>
-      <div className="p-3 w-full lg:w-1/2 rounded-lg border bg-neutral-800/60 backdrop-blur-sm border-neutral-700/60 group">
+      <div className="p-3 w-full lg:w-1/2 rounded-lg border bg-neutral-800/60 backdrop-blur-sm border-neutral-700/60 hover:shadow-[0_2px_10px_rgb(0,0,0,0.1)] shadow-amber-50/15 transition-shadow duration-300  group">
         <div className="flex justify-between items-center mb-2">
           <h2 className="text-xl text-green-500 font-bold ml-1">Meals</h2>
           <Button

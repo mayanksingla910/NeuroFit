@@ -71,7 +71,7 @@ function RouteComponent() {
 
   return (
     <div className="flex flex-wrap justify-between gap-4 p-4 text-white">
-      <div className="w-full lg:w-2/3 bg-neutral-900 rounded-2xl p-4 border border-neutral-800 flex flex-col items-center justify-center relative overflow-hidden">
+      <div className="w-full lg:w-2/3 aspect-video bg-neutral-900 rounded-2xl p-4 border border-neutral-800 flex flex-col items-center justify-center relative overflow-hidden">
         <div
           className={`absolute top-4 left-4 flex items-center gap-2 px-3 py-1 rounded-md transition-all duration-400 ${sessionStarted ? "bg-green-500/70" : "bg-neutral-700/70"}`}
         >
