@@ -31,18 +31,23 @@ function ProfilePage() {
 
   const { user } = useContext(UserContext);
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const response = await api.get(`/profile`);
-        setForm(response.data.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+useEffect(() => {
+  const fetchProfile = async () => {
+    try {
+      const response = await api.get(`/profile`);
 
-    fetchProfile();
-  }, []);
+      // ✔ correct key returned by FastAPI
+      if (response.data?.profile) {
+        setForm(response.data.profile);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  fetchProfile();
+}, []);
+
 
   const handleSave = async () => {
     try {
@@ -151,5 +156,4 @@ function ProfilePage() {
         </div>
       </main>
     </div>
-  );
-}
+  )};
