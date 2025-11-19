@@ -1,3 +1,6 @@
-groq
 fastapi
 uvicorn
+python-dotenv
+httpx
+pydantic
+groq
