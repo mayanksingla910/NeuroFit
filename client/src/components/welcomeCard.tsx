@@ -2,8 +2,13 @@ import { Button } from "./ui/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFire, faMedal } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
 
 export default function WelcomeCard({user}: {user: {name: string}}) {
+
+  const [streak] = useState(0);
+  const [caloriesBurned] = useState(0);
+
   const navigate = useNavigate();
 
   const name = user.name.split(" ")[0];
@@ -36,7 +41,7 @@ export default function WelcomeCard({user}: {user: {name: string}}) {
             />
             Streak
           </h2>
-          <p className="text-4xl font-bold  text-green-500 mt-2">7 Days</p>
+          <p className="text-4xl font-bold  text-green-500 mt-2">{streak} Days</p>
           <p className="text-neutral-400 text-sm mt-1">Keep it going!</p>
         </div>
 
@@ -50,7 +55,7 @@ export default function WelcomeCard({user}: {user: {name: string}}) {
             />
             Calories Burned
           </h2>
-          <p className="text-4xl font-bold text-green-500 mt-2">3,250</p>
+          <p className="text-4xl font-bold text-green-500 mt-2">{caloriesBurned}</p>
           <p className="text-neutral-400 text-sm mt-1">This week</p>
         </div>
       </div>

@@ -1,6 +1,8 @@
 import { useNavigate } from "@tanstack/react-router";
 import { Button } from "./ui/button";
-import { ChevronRight, Flame, Timer } from "lucide-react";
+import { ChevronRight, Flame, Soup, Timer } from "lucide-react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faDumbbell } from "@fortawesome/free-solid-svg-icons";
 
 const WORKOUT = {
   day: "Wednesday",
@@ -76,7 +78,9 @@ export default function DayPlan() {
     <div className="flex lg:flex-row flex-col gap-4 w-full ">
       <div className="p-3 w-full lg:w-1/2 rounded-lg border bg-neutral-800/60 backdrop-blur-sm border-neutral-700/60 hover:shadow-[0_2px_10px_rgb(0,0,0,0.1)] shadow-amber-50/15 transition-shadow duration-300  group">
         <div className="flex justify-between items-center mb-2">
-          <h2 className="text-xl text-green-500 font-bold ml-1">Exercises</h2>
+          <h2 className="text-xl flex items-center gap-2 text-green-500 font-bold ml-1">
+            <FontAwesomeIcon icon={faDumbbell} className="text-base rotate-45"/>
+            Exercises</h2>
           <Button
             onClick={() => navigate({ to: "/tracker" })}
             variant="link"
@@ -117,7 +121,9 @@ export default function DayPlan() {
       </div>
       <div className="p-3 w-full lg:w-1/2 rounded-lg border bg-neutral-800/60 backdrop-blur-sm border-neutral-700/60 hover:shadow-[0_2px_10px_rgb(0,0,0,0.1)] shadow-amber-50/15 transition-shadow duration-300  group">
         <div className="flex justify-between items-center mb-2">
-          <h2 className="text-xl text-green-500 font-bold ml-1">Meals</h2>
+          <h2 className="text-xl flex items-center gap-2 text-green-500 font-bold ml-1">
+            <Soup className="size-5"/>
+            Meals</h2>
           <Button
             onClick={() => navigate({ to: "/meal" })}
             variant="link"

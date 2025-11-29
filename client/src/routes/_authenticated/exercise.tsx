@@ -14,6 +14,7 @@ export const Route = createFileRoute("/_authenticated/exercise")({
 function RouteComponent() {
   const [loggedWorkouts, setLoggedWorkouts] = useState<LoggedWorkout[]>([]);
 
+
   useEffect(() => {
     const fetchLoggedWorkouts = async () => {
       try {
@@ -29,9 +30,11 @@ function RouteComponent() {
     fetchLoggedWorkouts();
   }, []);
 
+ 
+
   return (
     <div className="space-y-6 transition-all duration-300">
-      <ExerciseCard />
+      <ExerciseCard loggedWorkouts = {loggedWorkouts} />
       <LogWorkoutCard
         loggedWorkouts={loggedWorkouts}
         setLoggedWorkouts={setLoggedWorkouts}

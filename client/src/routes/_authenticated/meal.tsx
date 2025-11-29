@@ -11,6 +11,7 @@ export const Route = createFileRoute("/_authenticated/meal")({
 });
 
 function RouteComponent() {
+  
   const [nutrition, setNutrition] = useState<Nutrition>({
     Calories: 1550,
     Protein: 127,
