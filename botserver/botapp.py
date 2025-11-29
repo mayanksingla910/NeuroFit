@@ -5,7 +5,7 @@ import uvicorn
 from groq import Groq
 import os
 from dotenv import load_dotenv
-from botserver.nodeClient import fetch_profile_from_node
+from nodeClient import fetch_profile_from_node
 
 load_dotenv()
 
