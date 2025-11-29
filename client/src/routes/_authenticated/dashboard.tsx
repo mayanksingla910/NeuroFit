@@ -42,48 +42,50 @@ function Dashboard() {
 
   useScrollLock(viewChat && !isMinimized);
 
-
   const handleSendMessage = async (text: string) => {
-  const newUserMessage: Message = {
-    id: Date.now().toString(),
-    text,
-    sender: "user",
+    const newUserMessage: Message = {
+      id: Date.now().toString(),
+      text,
+      sender: "user",
+    };
+
+    // Add user message to UI
+    setMessages((prev) => [...prev, newUserMessage]);
+    setIsSending(true);
+
+    try {
+      const res = await fetch("https://neurofit-1-x7uk.onrender.com/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ message: text }),
+      });
+
+      const data = await res.json();
+
+      const newAiMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        text: data.reply,
+        sender: "ai",
+      };
+
+      setMessages((prev) => [...prev, newAiMessage]);
+    } catch (error) {
+      console.error("Error:", error);
+
+      const errorMessage: Message = {
+        id: (Date.now() + 2).toString(),
+        text: "Something went wrong. Please try again.",
+        sender: "ai",
+      };
+
+      setMessages((prev) => [...prev, errorMessage]);
+    }
+
+    setIsSending(false);
   };
-
-  // Add user message to UI
-  setMessages((prev) => [...prev, newUserMessage]);
-  setIsSending(true);
-
-  try {
-    const res = await fetch("https://neurofit-1-x7uk.onrender.com/chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: text }),
-    });
-
-    const data = await res.json();
-
-    const newAiMessage: Message = {
-      id: (Date.now() + 1).toString(),
-      text: data.reply,
-      sender: "ai",
-    };
-
-    setMessages((prev) => [...prev, newAiMessage]);
-  } catch (error) {
-    console.error("Error:", error);
-
-    const errorMessage: Message = {
-      id: (Date.now() + 2).toString(),
-      text: "Something went wrong. Please try again.",
-      sender: "ai",
-    };
-
-    setMessages((prev) => [...prev, errorMessage]);
-  }
-
-  setIsSending(false);
-};
   const handleSetViewChat = (shouldView: boolean) => {
     if (shouldView) {
       setViewChat(true);
@@ -108,7 +110,7 @@ function Dashboard() {
           ${viewChat && !isMinimized ? "mb-28 opacity-30 pointer-events-none" : ""} 
           `}
       >
-        <WelcomeCard user ={user}/>
+        <WelcomeCard user={user} />
         <ChatInput
           viewChat={viewChat && !isMinimized}
           setViewChat={handleSetViewChat}

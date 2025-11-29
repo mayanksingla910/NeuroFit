@@ -1,10 +1,11 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Header
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import uvicorn
 from groq import Groq
 import os
 from dotenv import load_dotenv
+from botserver.nodeClient import fetch_profile_from_node
 
 load_dotenv()
 
@@ -49,15 +50,12 @@ You give:
 If user profile is present, ALWAYS personalize your answer using it.
 """
 
-
-# ------------------------------- #
-#   CHAT ENDPOINT
-# ------------------------------- #
 @app.post("/chat")
-def chat(req: ChatRequest):
+def chat(req: ChatRequest, authorization: str = Header(alias="Authorization")):
     # Extract message and profile
+    token = authorization.split(" ")[1]  
     message = req.message
-    profile = req.profile or {}
+    profile = fetch_profile_from_node(token)
     print("===== RECEIVED PROFILE FROM CLIENT =====")
     print(profile)
     print("========================================")
