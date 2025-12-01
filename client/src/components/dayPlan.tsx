@@ -79,7 +79,7 @@ export default function DayPlan() {
       <div className="p-3 w-full lg:w-1/2 rounded-lg border bg-neutral-800/60 backdrop-blur-sm border-neutral-700/60 hover:shadow-[0_2px_10px_rgb(0,0,0,0.1)] shadow-amber-50/15 transition-shadow duration-300  group">
         <div className="flex justify-between items-center mb-2">
           <h2 className="text-xl flex items-center gap-2 text-green-500 font-bold ml-1">
-            <FontAwesomeIcon icon={faDumbbell} className="text-base rotate-45"/>
+            <FontAwesomeIcon icon={faDumbbell} className="text-sm rotate-45"/>
             Exercises</h2>
           <Button
             onClick={() => navigate({ to: "/tracker" })}

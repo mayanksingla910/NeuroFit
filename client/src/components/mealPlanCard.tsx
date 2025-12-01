@@ -1,8 +1,10 @@
-import { ChevronLeft, ChevronRight, Flame } from "lucide-react";
+import { ChevronLeft, ChevronRight, Flame, Plus } from "lucide-react";
 import { useState } from "react";
 import { Button } from "./ui/button";
 
 import { motion, AnimatePresence } from "framer-motion";
+import type { LoggedMeal } from "@/types/logMeal";
+import api from "@/lib/api";
 
 // Mock meal plan data for the week
 const MEAL = {
@@ -11,77 +13,77 @@ const MEAL = {
     {
         day: "Sunday",
         meals: [
-            { name: "Breakfast", summary: "Scrambled Eggs (3), Spinach, & Whole Grain Tortilla", calories: 490, macros: "P: 30g, C: 45g, F: 20g" },
-            { name: "Snack 1", summary: "Orange", calories: 70, macros: "P: 1g, C: 15g, F: 0g" },
-            { name: "Lunch", summary: "Leftover Steak & Veggies from Saturday", calories: 650, macros: "P: 50g, C: 35g, F: 35g" },
-            { name: "Snack 2", summary: "Edamame Pods", calories: 180, macros: "P: 15g, C: 15g, F: 5g" },
-            { name: "Dinner", summary: "Large Turkey Chili Bowl with Avocado", calories: 780, macros: "P: 65g, C: 70g, F: 25g" }
+          { name: "Breakfast", description: "Scrambled Eggs (3), Spinach, & Whole Grain Tortilla", calories: 490, protein: 30, carbs: 45, fat: 20 },
+          { name: "Snack", description: "Orange", calories: 70, protein: 1, carbs: 15, fat: 0 },
+          { name: "Lunch", description: "Leftover Steak & Veggies from Saturday", calories: 650, protein: 50, carbs: 35, fat: 35 },
+          { name: "Snack", description: "Edamame Pods", calories: 180, protein: 15, carbs: 15, fat: 5 },
+          { name: "Dinner", description: "Large Turkey Chili Bowl with Avocado", calories: 780, protein: 65, carbs: 70, fat: 25 }
         ],
         dailyTotal: "2170 kcal"
     },
     {
             day: "Monday",
             meals: [
-                { name: "Breakfast", summary: "Greek Yogurt, Mixed Berries, & Nuts", calories: 420, macros: "P: 25g, C: 45g, F: 18g" },
-                { name: "Snack 1", summary: "Banana (Pre-Workout)", calories: 105, macros: "P: 1g, C: 27g, F: 0g" },
-                { name: "Lunch", summary: "Grilled Chicken Salad w/ Balsamic", calories: 680, macros: "P: 60g, C: 35g, F: 35g" },
-                { name: "Snack 2", summary: "Hummus & Carrot Sticks (Post-Workout)", calories: 150, macros: "P: 5g, C: 20g, F: 6g" },
-                { name: "Dinner", summary: "Baked Salmon, Quinoa, & Steamed Broccoli", calories: 895, macros: "P: 65g, C: 70g, F: 40g" }
+              { name: "Breakfast", description: "Greek Yogurt, Mixed Berries, & Nuts", calories: 420, protein: 25, carbs: 45, fat: 18 },
+              { name: "Snack", description: "Banana (Pre-Workout)", calories: 105, protein: 1, carbs: 27, fat: 0 },
+              { name: "Lunch", description: "Grilled Chicken Salad w/ Balsamic", calories: 680, protein: 60, carbs: 35, fat: 35 },
+              { name: "Snack", description: "Hummus & Carrot Sticks (Post-Workout)", calories: 150, protein: 5, carbs: 20, fat: 6 },
+              { name: "Dinner", description: "Baked Salmon, Quinoa, & Steamed Broccoli", calories: 895, protein: 65, carbs: 70, fat: 40 }
             ],
             dailyTotal: "2250 kcal"
         },
         {
             day: "Tuesday",
             meals: [
-                { name: "Breakfast", summary: "Oatmeal with Sliced Apple & Cinnamon", calories: 480, macros: "P: 15g, C: 85g, F: 10g" },
-                { name: "Snack 1", summary: "Handful of Almonds", calories: 180, macros: "P: 6g, C: 7g, F: 15g" },
-                { name: "Lunch", summary: "Turkey Wrap (Whole Grain) with Veggies", calories: 590, macros: "P: 45g, C: 60g, F: 20g" },
-                { name: "Snack 2", summary: "Cottage Cheese with Pineapple Chunks", calories: 160, macros: "P: 20g, C: 15g, F: 3g" },
-                { name: "Dinner", summary: "Stir-fried Tofu with Brown Rice & Mixed Veggies", calories: 890, macros: "P: 40g, C: 90g, F: 40g" }
+              { name: "Breakfast", description: "Oatmeal with Sliced Apple & Cinnamon", calories: 480, protein: 15, carbs: 85, fat: 10 },
+              { name: "Snack", description: "Handful of Almonds", calories: 180, protein: 6, carbs: 7, fat: 15 },
+              { name: "Lunch", description: "Turkey Wrap (Whole Grain) with Veggies", calories: 590, protein: 45, carbs: 60, fat: 20 },
+              { name: "Snack", description: "Cottage Cheese with Pineapple Chunks", calories: 160, protein: 20, carbs: 15, fat: 3 },
+              { name: "Dinner", description: "Stir-fried Tofu with Brown Rice & Mixed Veggies", calories: 890, protein: 40, carbs: 90, fat: 40 }
             ],
             dailyTotal: "2300 kcal"
         },
         {
             day: "Wednesday",
             meals: [
-                { name: "Breakfast", summary: "Smoothie (Spinach, Banana, Protein, Almond Milk)", calories: 450, macros: "P: 40g, C: 45g, F: 10g" },
-                { name: "Snack 1", summary: "Hard-boiled Eggs (2)", calories: 140, macros: "P: 12g, C: 1g, F: 10g" },
-                { name: "Lunch", summary: "Quinoa Salad with Chickpeas & Lemon Vinaigrette", calories: 610, macros: "P: 25g, C: 80g, F: 25g" },
-                { name: "Snack 2", summary: "Rice Cakes with Peanut Butter (2 tbsp)", calories: 190, macros: "P: 8g, C: 25g, F: 8g" },
-                { name: "Dinner", summary: "Roast Chicken with Sweet Potatoes & Green Beans", calories: 950, macros: "P: 75g, C: 70g, F: 40g" }
+              { name: "Breakfast", description: "Smoothie (Spinach, Banana, Protein, Almond Milk)", calories: 450, protein: 40, carbs: 45, fat: 10 },
+              { name: "Snack", description: "Hard-boiled Eggs (2)", calories: 140, protein: 12, carbs: 1, fat: 10 },
+              { name: "Lunch", description: "Quinoa Salad with Chickpeas & Lemon Vinaigrette", calories: 610, protein: 25, carbs: 80, fat: 25 },
+              { name: "Snack", description: "Rice Cakes with Peanut Butter (2 tbsp)", calories: 190, protein: 8, carbs: 25, fat: 8 },
+              { name: "Dinner", description: "Roast Chicken with Sweet Potatoes & Green Beans", calories: 950, protein: 75, carbs: 70, fat: 40 }
             ],
             dailyTotal: "2340 kcal"
         },
         {
             day: "Thursday",
             meals: [
-                { name: "Breakfast", summary: "Whole Grain Toast, Avocado, & Poached Egg", calories: 510, macros: "P: 20g, C: 40g, F: 30g" },
-                { name: "Snack 1", summary: "Greek Yogurt, Honey, & Walnuts", calories: 220, macros: "P: 18g, C: 20g, F: 8g" },
-                { name: "Lunch", summary: "Lentil Soup with Side Salad", calories: 600, macros: "P: 30g, C: 75g, F: 20g" },
-                { name: "Snack 2", summary: "Sliced Cucumbers with Tzatziki", calories: 110, macros: "P: 5g, C: 10g, F: 5g" },
-                { name: "Dinner", summary: "Grilled Shrimp Tacos with Cabbage Slaw", calories: 900, macros: "P: 70g, C: 80g, F: 35g" }
+              { name: "Breakfast", description: "Whole Grain Toast, Avocado, & Poached Egg", calories: 510, protein: 20, carbs: 40, fat: 30 },
+              { name: "Snack", description: "Greek Yogurt, Honey, & Walnuts", calories: 220, protein: 18, carbs: 20, fat: 8 },
+              { name: "Lunch", description: "Lentil Soup with Side Salad", calories: 600, protein: 30, carbs: 75, fat: 20 },
+              { name: "Snack", description: "Sliced Cucumbers with Tzatziki", calories: 110, protein: 5, carbs: 10, fat: 5 },
+              { name: "Dinner", description: "Grilled Shrimp Tacos with Cabbage Slaw", calories: 900, protein: 70, carbs: 80, fat: 35 }
             ],
             dailyTotal: "2340 kcal"
         },
         {
             day: "Friday",
             meals: [
-                { name: "Breakfast", summary: "Chia Seed Pudding (Almond Milk) with Fresh Fruit", calories: 430, macros: "P: 15g, C: 50g, F: 20g" },
-                { name: "Snack 1", summary: "Protein Bar (20g protein)", calories: 240, macros: "P: 20g, C: 25g, F: 8g" },
-                { name: "Lunch", summary: "Spinach & Feta Omelet with Whole Grain Toast", calories: 620, macros: "P: 45g, C: 40g, F: 30g" },
-                { name: "Snack 2", summary: "Apple with Almond Butter", calories: 210, macros: "P: 5g, C: 30g, F: 10g" },
-                { name: "Dinner", summary: "Ground Turkey Stuffed Peppers", calories: 850, macros: "P: 60g, C: 85g, F: 30g" }
+              { name: "Breakfast", description: "Chia Seed Pudding (Almond Milk) with Fresh Fruit", calories: 430, protein: 15, carbs: 50, fat: 20 },
+              { name: "Snack", description: "Protein Bar (20g protein)", calories: 240, protein: 20, carbs: 25, fat: 8 },
+              { name: "Lunch", description: "Spinach & Feta Omelet with Whole Grain Toast", calories: 620, protein: 45, carbs: 40, fat: 30 },
+              { name: "Snack", description: "Apple with Almond Butter", calories: 210, protein: 5, carbs: 30, fat: 10 },
+              { name: "Dinner", description: "Ground Turkey Stuffed Peppers", calories: 850, protein: 60, carbs: 85, fat: 30 }
             ],
             dailyTotal: "2350 kcal"
         },
         {
             day: "Saturday",
             meals: [
-                { name: "Breakfast", summary: "Whole Grain Pancakes with Maple Syrup & Eggs", calories: 580, macros: "P: 30g, C: 70g, F: 20g" },
-                { name: "Snack 1", summary: "Mixed Nuts & Seeds", calories: 250, macros: "P: 8g, C: 15g, F: 18g" },
-                { name: "Lunch", summary: "Large Tuna Salad Sandwich on Whole Wheat", calories: 750, macros: "P: 55g, C: 60g, F: 35g" },
-                { name: "Snack 2", summary: "Protein Shake", calories: 200, macros: "P: 30g, C: 10g, F: 5g" },
-                { name: "Dinner", summary: "Lean Steak with Roasted Potatoes & Sautéed Greens", calories: 970, macros: "P: 80g, C: 90g, F: 35g" }
+              { name: "Breakfast", description: "Whole Grain Pancakes with Maple Syrup & Eggs", calories: 580, protein: 30, carbs: 70, fat: 20 },
+              { name: "Snack", description: "Mixed Nuts & Seeds", calories: 250, protein: 8, carbs: 15, fat: 18 },
+              { name: "Lunch", description: "Large Tuna Salad Sandwich on Whole Wheat", calories: 750, protein: 55, carbs: 60, fat: 35 },
+              { name: "Snack", description: "Protein Shake", calories: 200, protein: 30, carbs: 10, fat: 5 },
+              { name: "Dinner", description: "Lean Steak with Roasted Potatoes & Sautéed Greens", calories: 970, protein: 80, carbs: 90, fat: 35 }
             ],
             dailyTotal: "2750 kcal"
         },
@@ -90,7 +92,7 @@ const MEAL = {
 
 const day = new Date().getDay();
 
-const MealPlanCard = () => {
+const MealPlanCard = ({setLoggedMeals}: {setLoggedMeals: React.Dispatch<React.SetStateAction<LoggedMeal[]>>}) => {
   const [selectedDay, setSelectedDay] = useState(day);
   const [direction, setDirection] = useState(1);
 
@@ -118,6 +120,18 @@ const MealPlanCard = () => {
     setSelectedDay((prev) =>
       prev === MEAL.weeklyPlan.length - 1 ? 0 : prev + 1
     );
+  };
+
+  const handleLogMeal = async (e: React.MouseEvent, meal: LoggedMeal) => {
+    e.stopPropagation();
+    try {
+      const res = await api.post(`/logMeal`, meal);
+      if (res.data.success) {
+        setLoggedMeals((prev) => [res.data.data, ...prev]);
+      }
+    } catch (error) {
+      console.error("Error logging meal:", error);
+    }
   };
 
   return (
@@ -178,17 +192,25 @@ const MealPlanCard = () => {
               <>
                 <div
                   key={index}
-                  className="w-full rounded-md hover:bg-neutral-700/40 p-3"
+                  className="w-full rounded-md hover:bg-neutral-700/40 p-3 group relative"
                 >
                   <div className="">
-                    <div className="flex flex-row gap-2 sm:text-lg text-green-500 font-medium justify-between">
+                    <div className="flex flex-row gap-2 sm:text-lg  text-green-500 font-medium justify-between">
                       <h3 className="">{meal.name}</h3>
-                      <h3 className="">{meal.calories} kcal</h3>
+                      <h3 className="group-hover:opacity-0 transition-opacity">{meal.calories} kcal</h3>
                     </div>
                     <div className="flex flex-row gap-2 text-xs sm:text-sm text-neutral-400 font-medium justify-between">
-                      <h3 className="">{meal.summary}</h3>
-                      <h3>{meal.macros}</h3>
+                      <h3 >{meal.description}</h3>
+                      <h3 className="group-hover:opacity-0 transition-opacity">{meal.carbs}g Carbs | {meal.protein}g Protein | {meal.fat}g</h3>
                     </div>
+                    <Button
+                      variant="outline"
+                      onClick={(e) => handleLogMeal(e, meal as LoggedMeal)}
+                      className="absolute top-5 right-4 bg-inherit flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                    >
+                      <Plus />
+                      Log
+                    </Button>
                   </div>
                 </div>
               </>

@@ -58,7 +58,7 @@ function RouteComponent() {
           loggedMeals={loggedMeals}
           setLoggedMeals={setLoggedMeals}
         />
-        <MealPlanCard />
+        <MealPlanCard setLoggedMeals={setLoggedMeals}/>
       </main>
     </div>
   );
