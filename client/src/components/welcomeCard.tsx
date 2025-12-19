@@ -2,12 +2,15 @@ import { Button } from "./ui/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFire, faMedal } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { UserContext } from "@/context/userContext";
+import { motion } from "framer-motion";
 
-export default function WelcomeCard({user}: {user: {name: string}}) {
-
+export default function WelcomeCard() {
   const [streak] = useState(0);
   const [caloriesBurned] = useState(0);
+
+  const { user, loading } = useContext(UserContext);
 
   const navigate = useNavigate();
 
@@ -16,7 +19,16 @@ export default function WelcomeCard({user}: {user: {name: string}}) {
   return (
     <div className="flex flex-col lg:flex-row justify-between md:items-center gap-8 p-6 bg-neutral-800/70 border hover:shadow-[0_2px_8px_rgb(0,0,0.1)] backdrop-blur-md shadow-amber-50/20 hover:-translate-y-1 transition-all duration-300 rounded-xl">
       <div className="flex-1 sm:w-full lg:w-1/2 2xl:w-2/3">
-        <h1 className="text-3xl font-bold text-gray-100">Hey {name}</h1>
+        {!loading && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className="text-3xl font-bold text-gray-100"
+          >
+            Hey {name}
+          </motion.div>
+        )}
         <p className="text-neutral-400 text-base mt-2">
           Ready to crush today’s fitness goals?
         </p>
@@ -41,7 +53,9 @@ export default function WelcomeCard({user}: {user: {name: string}}) {
             />
             Streak
           </h2>
-          <p className="text-4xl font-bold  text-green-500 mt-2">{streak} Days</p>
+          <p className="text-4xl font-bold  text-green-500 mt-2">
+            {streak} Days
+          </p>
           <p className="text-neutral-400 text-sm mt-1">Keep it going!</p>
         </div>
 
@@ -55,7 +69,9 @@ export default function WelcomeCard({user}: {user: {name: string}}) {
             />
             Calories Burned
           </h2>
-          <p className="text-4xl font-bold text-green-500 mt-2">{caloriesBurned}</p>
+          <p className="text-4xl font-bold text-green-500 mt-2">
+            {caloriesBurned}
+          </p>
           <p className="text-neutral-400 text-sm mt-1">This week</p>
         </div>
       </div>

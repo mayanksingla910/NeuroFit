@@ -68,6 +68,7 @@ function RouteComponent() {
       console.log(response);
       if (response.data?.success && userRes.data?.success) {
         navigate({to: "/dashboard"});
+        localStorage.setItem("onboarded", "true");
       }
     } catch (error) {
       console.error(error);

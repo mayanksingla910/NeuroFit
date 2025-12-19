@@ -3,11 +3,10 @@ import ChatInput from "@/components/chatInput";
 import WeightChart from "@/components/weightChart";
 import WelcomeCard from "@/components/welcomeCard";
 import { createFileRoute } from "@tanstack/react-router";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import DayPlan from "@/components/dayPlan";
 import { AnimatePresence, motion } from "framer-motion";
 import ChatBubble from "@/components/chatbubble";
-import { UserContext } from "@/context/userContext";
 
 const useScrollLock = (isLocked: boolean) => {
   useEffect(() => {
@@ -38,8 +37,6 @@ function Dashboard() {
   const [isSending, setIsSending] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
 
-  const { user } = useContext(UserContext);
-
   useScrollLock(viewChat && !isMinimized);
 
   const handleSendMessage = async (text: string) => {
@@ -49,7 +46,6 @@ function Dashboard() {
       sender: "user",
     };
 
-    // Add user message to UI
     setMessages((prev) => [...prev, newUserMessage]);
     setIsSending(true);
 
@@ -110,7 +106,7 @@ function Dashboard() {
           ${viewChat && !isMinimized ? "mb-28 opacity-30 pointer-events-none" : ""} 
           `}
       >
-        <WelcomeCard user={user} />
+        <WelcomeCard />
         <ChatInput
           viewChat={viewChat && !isMinimized}
           setViewChat={handleSetViewChat}

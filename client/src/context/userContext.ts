@@ -4,6 +4,7 @@ import type { UserType } from "@/types/user";
 export type UserContextType = {
   user: UserType;
   setUser: React.Dispatch<React.SetStateAction<UserType>>;
+  loading: boolean;
 };
 
 export const UserContext = createContext<UserContextType>({
@@ -14,4 +15,5 @@ export const UserContext = createContext<UserContextType>({
     onboarded: false,
   },
   setUser: () => {},
+  loading: false,
 });

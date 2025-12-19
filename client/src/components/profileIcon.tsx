@@ -14,6 +14,7 @@ export default function ProfileIcon() {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("onboarded");
     navigate({to: "/login"});
   };
 

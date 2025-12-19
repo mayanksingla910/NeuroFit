@@ -2,6 +2,7 @@ import { X, Loader2, Minus } from "lucide-react";
 import { useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "./ui/button";
+import { MessageRenderer } from "./messageRenderer";
 
 interface Message {
   id: string;
@@ -99,15 +100,20 @@ export default function Chatbox({
               className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
             >
               <div
-                className={`p-3 rounded-xl max-w-sm md:max-w-md shadow-md
+                className={`p-3 rounded-xl max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl shadow-md
                   ${
                     msg.sender === "user"
                       ? "bg-green-700/80 text-white rounded-tr-none"
                       : "bg-neutral-700 text-gray-200 rounded-tl-none"
                   }
                 `}
-              >
-                {msg.text}
+              >{
+                    msg.sender === "user"
+                      ?  msg.text
+                      : <MessageRenderer text={msg.text} />
+                  }
+              
+             
               </div>
             </div>
           ))}

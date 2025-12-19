@@ -4,9 +4,4 @@ export const Route = createFileRoute('/')({
   beforeLoad: () => {
     throw redirect({ to: "/dashboard" });
   },
-  // component: RouteComponent,
 })
-
-// function RouteComponent() {
-//   return <div>Hello "/"!</div>
-// }

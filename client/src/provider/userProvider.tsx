@@ -10,14 +10,18 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     username: "",
     onboarded: false,
   });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
+        setLoading(true);
         const response = await api.get(`/user`);
-        setUser(response.data.data); 
+        setUser(response.data.data);
       } catch (error) {
         console.error("Error fetching user:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -25,7 +29,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, setUser, loading }}>
       {children}
     </UserContext.Provider>
   );
