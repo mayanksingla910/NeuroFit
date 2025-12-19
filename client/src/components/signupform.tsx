@@ -6,10 +6,13 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { signupSchema } from "@/types/auth";
 import api from "@/lib/api";
+import LoadingSpinner from "./loadingSpinner";
+import { toast } from "sonner";
+import { isAxiosError } from "axios";
 
 export function SignupForm({
   className,
@@ -23,6 +26,10 @@ export function SignupForm({
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const coldStartTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,11 +39,23 @@ export function SignupForm({
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (coldStartTimerRef.current) {
+      clearTimeout(coldStartTimerRef.current);
+    }
+
     try {
-      signupSchema.parse(form);
-      const user = await api.post(`/auth/signup`, form);
+      setLoading(true);
+      const validatedData = signupSchema.parse(form);
+      coldStartTimerRef.current = setTimeout(() => {
+        toast.info(
+          "Please wait, the server might be experiencing a cold start."
+        );
+      }, 15000);
+      const user = await api.post("/auth/signup", validatedData);
       if (user.data.success) {
         localStorage.setItem("token", user.data.data.token);
+        toast.success("Signup successful");
         navigate({ to: "/intro" });
       }
     } catch (err) {
@@ -49,6 +68,18 @@ export function SignupForm({
           }
         });
         setErrors(fieldErrors);
+        return;
+      }
+      if (isAxiosError(err)) {
+        toast.error(err.response?.data?.message ?? "Signup failed");
+        return;
+      }
+      toast.error("Something went wrong. Try again.");
+    } finally {
+      setLoading(false);
+      if (coldStartTimerRef.current) {
+        clearTimeout(coldStartTimerRef.current);
+        coldStartTimerRef.current = null;
       }
     }
   };
@@ -129,9 +160,10 @@ export function SignupForm({
 
             <Button
               type="submit"
-              className="w-full bg-green-600 hover:bg-green-600/80 text-neutral-200"
+              disabled={loading}
+              className="w-full bg-green-600 hover:bg-green-600/80 text-white disabled:bg-green-700"
             >
-              Create Account
+              {loading ? <LoadingSpinner /> : "Create Account"}
             </Button>
           </div>
 
@@ -157,11 +189,17 @@ export function SignupForm({
 
       <div className="text-muted-foreground text-center text-xs mt-2 text-balance">
         By clicking continue, you agree to our{" "}
-        <a href="#" className="underline underline-offset-4 hover:text-primary">
+        <a
+          href="/terms"
+          className="underline underline-offset-4 hover:text-primary"
+        >
           Terms of Service
         </a>{" "}
         and{" "}
-        <a href="#" className="underline underline-offset-4 hover:text-primary">
+        <a
+          href="/privacy"
+          className="underline underline-offset-4 hover:text-primary"
+        >
           Privacy Policy
         </a>
         .

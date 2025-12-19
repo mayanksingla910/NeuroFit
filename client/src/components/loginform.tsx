@@ -4,11 +4,14 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { z } from "zod";
 import { loginSchema } from "@/types/auth";
-import { useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import api from "@/lib/api";
+import LoadingSpinner from "./loadingSpinner";
+import { toast } from "sonner";
+import { isAxiosError } from "axios";
 
 export function LoginForm({
   className,
@@ -20,6 +23,9 @@ export function LoginForm({
   });
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [loading, setLoading] = useState(false);
+
+  const coldStartTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const navigate = useNavigate();
 
@@ -28,14 +34,26 @@ export function LoginForm({
     setErrors((prev) => ({ ...prev, [e.target.id]: "" }));
   };
 
-  const handleSubmit =async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (coldStartTimerRef.current) {
+      clearTimeout(coldStartTimerRef.current);
+    }
+
     try {
-      loginSchema.parse(form);
-      const user = await api.post(`/auth/login`, form);
-      if(user.data.success) {
+      setLoading(true);
+      const validatedData = loginSchema.parse(form);
+      coldStartTimerRef.current = setTimeout(() => {
+        toast.info(
+          "Please wait, the server might be experiencing a cold start."
+        );
+      }, 15000);
+      const user = await api.post(`/auth/login`, validatedData);
+      if (user.data.success) {
         localStorage.setItem("token", user.data.data.token);
-      navigate({ to: "/dashboard" });
+        toast.success("Login successful");
+        navigate({ to: "/dashboard" });
       }
     } catch (err) {
       if (err instanceof z.ZodError) {
@@ -47,13 +65,26 @@ export function LoginForm({
           }
         });
         setErrors(fieldErrors);
+        return;
+      }
+      if (isAxiosError(err)) {
+        toast.error(err.response?.data?.message ?? "Login failed");
+        return;
+      }
+
+      toast.error("Something went wrong. Try again.");
+    } finally {
+      setLoading(false);
+      if (coldStartTimerRef.current) {
+        clearTimeout(coldStartTimerRef.current);
+        coldStartTimerRef.current = null;
       }
     }
   };
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={(e) => {handleSubmit(e)}} noValidate>
         <div className="flex flex-col gap-6">
           <div className="flex flex-col items-center gap-2">
             <div className="flex size-8 items-center justify-center rounded-md">
@@ -62,9 +93,9 @@ export function LoginForm({
             <h1 className="text-xl font-bold">Welcome to NeuroLift</h1>
             <div className="text-center text-sm">
               Don&apos;t have an account?{" "}
-              <a href="/signup" className="underline underline-offset-4">
+              <Link to="/signup" className="underline underline-offset-4">
                 Sign up
-              </a>
+              </Link>
             </div>
           </div>
 
@@ -112,9 +143,10 @@ export function LoginForm({
 
             <Button
               type="submit"
-              className="w-full bg-green-600 hover:bg-green-600/80 text-neutral-200"
+              disabled={loading}
+              className="w-full bg-green-600 hover:bg-green-600/80 text-white disabled:bg-green-700"
             >
-              Login
+              {loading ? <LoadingSpinner /> : "Login"}
             </Button>
           </div>
 
@@ -144,11 +176,17 @@ export function LoginForm({
 
       <div className="text-center text-xs text-muted-foreground text-balance">
         By clicking continue, you agree to our{" "}
-        <a href="#" className="underline underline-offset-4 hover:text-primary">
+        <a
+          href="/terms"
+          className="underline underline-offset-4 hover:text-primary"
+        >
           Terms of Service
         </a>{" "}
         and{" "}
-        <a href="#" className="underline underline-offset-4 hover:text-primary">
+        <a
+          href="/privacy"
+          className="underline underline-offset-4 hover:text-primary"
+        >
           Privacy Policy
         </a>
         .
