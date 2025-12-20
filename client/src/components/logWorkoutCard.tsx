@@ -59,7 +59,6 @@ const LogWorkoutCard = ({
     let isUndoClicked = false;
 
     toast.success("Workout deleted", {
-      duration: 7000,
       action: {
         label: "Undo",
         onClick: () => {
@@ -72,7 +71,7 @@ const LogWorkoutCard = ({
           });
         },
       },
-      onDismiss: () => {
+      onAutoClose: () => {
         if (!isUndoClicked) {
           api.delete(`/logWorkout/${id}`).catch((error) => {
             if (isAxiosError(error)) {

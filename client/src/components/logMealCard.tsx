@@ -60,7 +60,6 @@ const LogMealCard = ({
     setLoggedMeals((prev) => prev.filter((m) => m.id !== id));
     let isUndoClicked = false;
     toast.success("Meal deleted", {
-      duration: 7000,
       action: {
         label: "Undo",
         onClick: () => {
@@ -72,7 +71,7 @@ const LogMealCard = ({
           });
         },
       },
-      onDismiss: () => {
+      onAutoClose: () => {
         if (!isUndoClicked) {
           api.delete(`/deleteLoggedMeal/${id}`).catch((error) => {
             if (isAxiosError(error)) {
