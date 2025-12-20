@@ -10,7 +10,7 @@ function RootComponent() {
 
   return (
     <React.Fragment>
-      <Toaster position='top-center'/>
+      <Toaster position='bottom-right' expand/>
       <Outlet />
     </React.Fragment>
   )

@@ -6,6 +6,8 @@ import type { LoggedWorkout, WorkoutPlan } from "@/types/workout";
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import WorkoutDetailsDialog from "./workoutDetailsDialog";
 import api from "@/lib/api";
+import { toast } from "sonner";
+import { isAxiosError } from "axios";
 
 const day = new Date().getDay();
 
@@ -52,9 +54,14 @@ const WorkoutPlanCard = ({
       const res = await api.post(`/logWorkout`, workout);
       if (res.data.success) {
         setLoggedWorkouts((prev) => [res.data.data, ...prev]);
+        toast.success(res.data.message);
       }
     } catch (error) {
-      console.error("Error logging workout:", error);
+      if(isAxiosError(error)){
+        toast.error(error.response?.data.message);
+        return;
+      }
+      toast.error("Error logging workout");
     }
   };
 

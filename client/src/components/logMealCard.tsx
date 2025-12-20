@@ -5,31 +5,85 @@ import { Dialog, DialogTrigger } from "./ui/dialog";
 import LogMealDialog from "./logMealDialog";
 import type { LoggedMeal } from "@/types/logMeal";
 import api from "@/lib/api";
+import { toast } from "sonner";
+import { isAxiosError } from "axios";
 
-const LogMealCard = ({loggedMeals, setLoggedMeals}: {loggedMeals: LoggedMeal[], setLoggedMeals: React.Dispatch<React.SetStateAction<LoggedMeal[]>>}) => {
-  
-
+const LogMealCard = ({
+  loggedMeals,
+  setLoggedMeals,
+}: {
+  loggedMeals: LoggedMeal[];
+  setLoggedMeals: React.Dispatch<React.SetStateAction<LoggedMeal[]>>;
+}) => {
   const handleLogMeal = async (meal: LoggedMeal) => {
-    try{
+    try {
       const res = await api.post(`/logMeal`, meal);
-      setLoggedMeals((prev) => [res.data.data, ...prev]);
-    }catch(error){ 
-      console.error("Error logging meal:", error);
+      if (res.data.success) {
+        setLoggedMeals((prev) => [res.data.data, ...prev]);
+        toast.success(res.data.message);
+      }
+    } catch (error) {
+      if (isAxiosError(error)) {
+        toast.error(error.response?.data.message);
+        return;
+      }
+      toast.error("Error logging meal");
     }
   };
 
   const handleUpdateMeal = async (updatedMeal: LoggedMeal) => {
     try {
-      await api.put(`/updateLoggedMeal/${updatedMeal.id}`, updatedMeal);
-      setLoggedMeals((prev) => prev.map((meal) => (meal.id === updatedMeal.id ? updatedMeal : meal)));
+      const res = await api.put(
+        `/updateLoggedMeal/${updatedMeal.id}`,
+        updatedMeal
+      );
+      if (res.data.success) {
+        setLoggedMeals((prev) =>
+          prev.map((meal) => (meal.id === updatedMeal.id ? updatedMeal : meal))
+        );
+        toast.success(res.data.message);
+      }
     } catch (error) {
-      console.error("Error updating meal:", error);
+      if (isAxiosError(error)) {
+        toast.error(error.response?.data.message);
+        return;
+      }
+      toast.error("Error updating meal");
     }
   };
 
   const handleDeleteMeal = async (id: number) => {
-    await api.delete(`/deleteLoggedMeal/${id}`);
-    setLoggedMeals((prev) => prev.filter((meal) => meal.id !== id));
+    const originalIndex = loggedMeals.findIndex((m) => m.id === id);
+    const mealToDelete = loggedMeals[originalIndex];
+    if (!mealToDelete) return;
+
+    setLoggedMeals((prev) => prev.filter((m) => m.id !== id));
+    let isUndoClicked = false;
+    toast.success("Meal deleted", {
+      duration: 7000,
+      action: {
+        label: "Undo",
+        onClick: () => {
+          isUndoClicked = true;
+          setLoggedMeals((prev) => {
+            const newMeals = [...prev];
+            newMeals.splice(originalIndex, 0, mealToDelete);
+            return newMeals;
+          });
+        },
+      },
+      onDismiss: () => {
+        if (!isUndoClicked) {
+          api.delete(`/deleteLoggedMeal/${id}`).catch((error) => {
+            if (isAxiosError(error)) {
+              toast.error(error.response?.data.message);
+              return;
+            }
+            toast.error("Failed to delete from server");
+          });
+        }
+      },
+    });
   };
 
   return (

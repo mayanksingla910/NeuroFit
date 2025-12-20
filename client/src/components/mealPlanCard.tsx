@@ -5,6 +5,8 @@ import { Button } from "./ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import type { LoggedMeal } from "@/types/logMeal";
 import api from "@/lib/api";
+import { toast } from "sonner";
+import { isAxiosError } from "axios";
 
 // Mock meal plan data for the week
 const MEAL = {
@@ -128,9 +130,14 @@ const MealPlanCard = ({setLoggedMeals}: {setLoggedMeals: React.Dispatch<React.Se
       const res = await api.post(`/logMeal`, meal);
       if (res.data.success) {
         setLoggedMeals((prev) => [res.data.data, ...prev]);
+        toast.success(res.data.message);
       }
     } catch (error) {
-      console.error("Error logging meal:", error);
+      if(isAxiosError(error)){
+        toast.error(error.response?.data.message);
+        return;
+      }
+      toast.error("Error logging meal");
     }
   };
 

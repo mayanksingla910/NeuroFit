@@ -70,10 +70,8 @@ const LogMealDialog = ({ onSubmit, initialMeal }: LogMealDialogProps) => {
             <Label className="mb-2">Calories (kcal)</Label>
             <Input
               type="number"
-              value={meal.calories ?? ""}
-              onFocus={(e) => {
-                  if (Number(e.target.value) === 0) e.target.value = "";
-                }}
+              value={meal.calories || ""}
+              placeholder="0"
               onChange={(e) =>
                 setMeal((prev) => ({
                   ...prev,
@@ -90,10 +88,8 @@ const LogMealDialog = ({ onSubmit, initialMeal }: LogMealDialogProps) => {
               <Label className="mb-2">{key} (g)</Label>
               <Input
                 type="number"
-                onFocus={(e) => {
-                  if (Number(e.target.value) === 0) e.target.value = "";
-                }}
-                value={meal[key as keyof LoggedMeal] as number ?? ""}
+                placeholder="0"
+                value={(meal[key as keyof LoggedMeal] as number) || ""}
                 onChange={(e) =>
                   setMeal((prev) => ({
                     ...prev,

@@ -5,6 +5,8 @@ import LogWorkoutDialog from "./logWorkoutDialog";
 import type { LoggedWorkout } from "@/types/workout";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import api from "@/lib/api";
+import { toast } from "sonner";
+import { isAxiosError } from "axios";
 
 const LogWorkoutCard = ({
   loggedWorkouts,
@@ -13,16 +15,19 @@ const LogWorkoutCard = ({
   loggedWorkouts: LoggedWorkout[];
   setLoggedWorkouts: React.Dispatch<React.SetStateAction<LoggedWorkout[]>>;
 }) => {
-  
-
   const handleLogWorkout = async (workout: LoggedWorkout) => {
     try {
       const res = await api.post(`/logWorkout`, workout);
       if (res.data.success) {
         setLoggedWorkouts((prev) => [res.data.data, ...prev]);
+        toast.success(res.data.message);
       }
     } catch (error) {
-      console.error("Error logging workout:", error);
+      if (isAxiosError(error)) {
+        toast.error(error.response?.data.message);
+        return;
+      }
+      toast.error("Error logging workout");
     }
   };
 
@@ -33,24 +38,53 @@ const LogWorkoutCard = ({
         setLoggedWorkouts((prev) =>
           prev.map((w) => (w.id === workout.id ? res.data.data : w))
         );
+        toast.success(res.data.message);
       }
     } catch (error) {
-      console.error("Error updating workout:", error);
+      if (isAxiosError(error)) {
+        toast.error(error.response?.data.message);
+        return;
+      }
+      toast.error("Error logging workout");
     }
   };
 
-  const handleDelete = async (id: number) => {
-    try {
-      const res = await api.delete(`/logWorkout/${id}`);
-      if (res.data.success)
-        setLoggedWorkouts((prev) =>
-          prev.filter((workout) => workout.id !== id)
-        );
-    } catch (error) {
-      console.error("Error deleting workout:", error);
-    }
-  };
+  const handleDelete = (id: number) => {
+    const originalIndex = loggedWorkouts.findIndex((w) => w.id === id);
+    const workoutToDelete = loggedWorkouts[originalIndex];
+    if (!workoutToDelete) return;
 
+    setLoggedWorkouts((prev) => prev.filter((w) => w.id !== id));
+
+    let isUndoClicked = false;
+
+    toast.success("Workout deleted", {
+      duration: 7000,
+      action: {
+        label: "Undo",
+        onClick: () => {
+          isUndoClicked = true;
+
+          setLoggedWorkouts((prev) => {
+            const newWorkouts = [...prev];
+            newWorkouts.splice(originalIndex, 0, workoutToDelete);
+            return newWorkouts;
+          });
+        },
+      },
+      onDismiss: () => {
+        if (!isUndoClicked) {
+          api.delete(`/logWorkout/${id}`).catch((error) => {
+            if (isAxiosError(error)) {
+              toast.error(error.response?.data.message);
+              return;
+            }
+            toast.error("Failed to delete from server");
+          });
+        }
+      },
+    });
+  };
   return (
     <div className="flex flex-col gap-4 p-6 bg-neutral-800/70 hover:shadow-[0_2px_10px_rgb(0,0,0,0.1)] shadow-amber-50/20 transition-shadow duration-300 backdrop-blur-md rounded-xl">
       <div className="flex justify-between items-end">
