@@ -107,9 +107,9 @@ const LogMealCard = ({
             No meals logged yet.
           </p>
         ) : (
-          loggedMeals.map((meal, i) => (
+          loggedMeals.map((meal) => (
             <div
-              key={i}
+              key={meal.id}
               className="flex justify-between items-center p-3 rounded-md hover:bg-neutral-700/40 group transition-colors"
             >
               <div className="w-full">

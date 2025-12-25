@@ -90,7 +90,7 @@ export function LoginForm({
             <div className="flex size-8 items-center justify-center rounded-md">
               <GalleryVerticalEnd className="size-6" />
             </div>
-            <h1 className="text-xl font-bold">Welcome to NeuroLift</h1>
+            <h1 className="text-xl font-bold">Welcome to NeuroFit</h1>
             <div className="text-center text-sm">
               Don&apos;t have an account?{" "}
               <Link to="/signup" className="underline underline-offset-4">

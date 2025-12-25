@@ -73,10 +73,10 @@ function RouteComponent() {
     <div className="flex flex-wrap justify-between gap-4 p-4 text-white">
       <div className="w-full aspect-video lg:w-2/3 bg-neutral-900 rounded-2xl p-4 border border-neutral-800 flex flex-col items-center justify-center relative overflow-hidden">
         <img
-  src="http://localhost:5000/video_feed"
-  alt="Live Pose Detection"
-  className="rounded-xl border border-neutral-700 w-full absolute object-contain top-0"
-/>
+          src="http://localhost:5000/video_feed"
+          alt="Live Pose Detection"
+          className="rounded-xl border border-neutral-700 w-full absolute object-contain top-0"
+        />
 
         <div
           className={`absolute top-4 left-4 flex items-center gap-2 px-3 py-1 rounded-md transition-all duration-400 ${sessionStarted ? "bg-green-500/70" : "bg-neutral-700/70"}`}
