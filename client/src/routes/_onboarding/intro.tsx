@@ -37,6 +37,7 @@ function RouteComponent() {
       const res = await api.post("/profile", form)
       const userRes = await api.post("/user", { onboarded: true })
       if (res.data?.success && userRes.data?.success) {
+        localStorage.setItem("onboarded", "true");
         setTimeout(() => navigate({ to: "/dashboard" }), 500);
       }
     } catch (error) {

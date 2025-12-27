@@ -82,9 +82,22 @@ export function LoginForm({
     }
   };
 
+  const handleTestCreds = () => {
+    setForm((prev) => ({
+      ...prev,
+      email: "user@example.com",
+      password: "hellouser",
+    }));
+  };
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <form onSubmit={(e) => {handleSubmit(e)}} noValidate>
+      <form
+        onSubmit={(e) => {
+          handleSubmit(e);
+        }}
+        noValidate
+      >
         <div className="flex flex-col gap-6">
           <div className="flex flex-col items-center gap-2">
             <div className="flex size-8 items-center justify-center rounded-md">
@@ -101,7 +114,17 @@ export function LoginForm({
 
           <div className="flex flex-col gap-6">
             <div className="grid gap-1.5">
-              <Label htmlFor="email">Email</Label>
+              <div className="flex justify-between">
+                <Label htmlFor="email">Email</Label>
+                <Button
+                  type="button"
+                  onClick={handleTestCreds}
+                  variant={"ghost"}
+                  className="text-green-500 hover:text-green-400"
+                >
+                  Test Creds
+                </Button>
+              </div>
               <Input
                 id="email"
                 type="email"
